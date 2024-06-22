@@ -1,7 +1,6 @@
 # import required module
 import os
 import sys
-import Datetime
 import re
 
 # help function
@@ -14,11 +13,12 @@ def help():
     sys.stdout.buffer.write(sa.encode('utf8'))
 
     # Validate entered zipcode is in correct format
-    def isvalid_zipcode(z):
-        pattern = r"^\d{5}$"
-        match = re.match(pattern,z)
-        if match: print("Valid Zipcode")
-        else: print("Please enter the valid 5-digit zip code format")
-    
-    # Validate entered Month & year are in correct format
-    def isvalid_monthyear():
+def isvalid_zipcode(z):
+    pattern = r"^\d{5}$"
+    match = re.match(pattern,z)
+    if match: 
+        print("Valid Zipcode")
+        return True
+    else: 
+        print("Please enter the valid 5-digit zip code format")  
+        return False 
