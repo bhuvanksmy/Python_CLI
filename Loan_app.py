@@ -90,7 +90,7 @@ def ls_transaction(zipcode,month,year):
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
     mycursor=conn.cursor()
-    query = "SELECT cr.* FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, 4) = " + str(year) + " AND SUBSTRING(TIMEID, 5, 1) = " + str(month) + " AND cu.cust_zip =" + str(zipcode)+" order by CAST(SUBSTRING(TIMEID, 5, 1) as UNSIGNED),CAST(SUBSTRING(TIMEID, 6, 7) as UNSIGNED),CAST(SUBSTRING(TIMEID, 1, 4) as UNSIGNED) desc"
+    query = "SELECT cr.CREDIT_CARD_NO, cr.TIMEID, cr.CUST_SSN, cr.BRANCH_CODE,cr.TRANSACTION_ID, cr.TRANSACTION_TYPE, cr.TRANSACTION_VALUE FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, 4) = " + str(year) + " AND SUBSTRING(TIMEID, 5, 1) = " + str(month) + " AND cu.cust_zip =" + str(zipcode)+" order by CAST(SUBSTRING(TIMEID, 5, 1) as UNSIGNED),CAST(SUBSTRING(TIMEID, 6, 7) as UNSIGNED),CAST(SUBSTRING(TIMEID, 1, 4) as UNSIGNED) desc"
     print(query)
     mycursor.execute(query)
     result = mycursor.fetchall(); # fetch all the values from the mysql database
