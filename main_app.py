@@ -2,6 +2,8 @@ from Loan_app import *
 import sys
 if __name__=="__main__": 
     print ('argument list', sys.argv)
+    # load JSON into my sql database
+    load_database()
     # get zipcode as user input
     zipcode = input("Enter a valid zipcode:")
     while isvalid_zipcode(zipcode) == False:
@@ -18,4 +20,5 @@ if __name__=="__main__":
     while isvalid_year(year) == False:
         # if invalid year ask user to enter year as 4 digit integer YYYY format
         year = input("Enter year in YYYY format:")
+    ls_transaction(zipcode,month,year)
     
