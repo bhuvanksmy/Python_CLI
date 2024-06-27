@@ -189,21 +189,21 @@ def get_monthly_bill(credit_card_no,month,year):
     conn.close()
     print("Successfully closed the connection")
 
-    # Used to display the transactions made by a customer between two dates.
+# method to display the transactions made by a customer between two dates.
 def transactions_within_range(start_date,end_date):
     conn =dbconnect.connect(host='localhost',database='creditcard_capstone',user='root',password='password',port='3306')
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
     mycursor=conn.cursor()
-    query = """select CREDIT_CARD_NO, TIMEID, BRANCH_CODE, TRANSACTION_ID, TRANSACTION_TYPE, TRANSACTION_VALUE  from cdw_sapp_credit_card where TIMEID = %s AND TIMEID = %s """
+    query = """select distinct TRANSACTION_ID,TRANSACTION_TYPE,TRANSACTION_VALUE, CREDIT_CARD_NO,TIMEID from cdw_sapp_credit_card where TIMEID BETWEEN '%s' AND '%s' """
     # print(query)
-    values = (credit_card_no,month,year)
+    values = (start_date,end_date)
     mycursor.execute(query,values)
     result = mycursor.fetchall(); # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    df.columns = ['CREDIT_CARD_NO',"TIMEID",'SSN', 'BRANCH_CODE', 'TRANSACTION_TYPE', 'TRANSACTION_VALUE', 'TRANSACTION_ID']
+    df.columns = ['TRANSACTION_ID','TRANSACTION_TYPE','TRANSACTION_VALUE','CREDIT_CARD_NO',"TIMEID"]
     # Display the Pandas Dataframe
     print(df)
     #print(result)
