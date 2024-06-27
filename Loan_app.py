@@ -73,7 +73,7 @@ def load_database():
     # Reading JSON Credit_card data 
     df_creditcard = spark.read.option("multiline","true").json("cdw_sapp_credit.json")
     # Manipulating Credit card data according to the specifications in mapping document.
-    df_creditcard=df_creditcard.select("CREDIT_CARD_NO",make_date(YEAR,MONTH,DAY).alias("TIMEID"),"CUST_SSN","BRANCH_CODE","TRANSACTION_TYPE","TRANSACTION_VALUE","TRANSACTION_ID")
+    df_creditcard=df_creditcard.select("CREDIT_CARD_NO",expr("YEAR || MONTH || DAY").alias("TIMEID"),"CUST_SSN","BRANCH_CODE","TRANSACTION_TYPE","TRANSACTION_VALUE","TRANSACTION_ID")
 
 
     df_customer.write \
