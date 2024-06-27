@@ -72,6 +72,12 @@ if __name__=="__main__":
             year = input("Enter year as 2018 in YYYY format:")
     get_monthly_bill(credit_card_no,month,year)
     
+    # calling the method to display the transactions made by a customer between two dates.
+    print("Enter the start & End date to pull the transaction made by the customer for specific date range:")
+    start_date = int(input("Enter Start Date:"))
+    end_date = int(input("Enter End Date:"))
+    print("Extracting transaction data from {} to {}".format(start_date,end_date))
+    transactions_within_range(start_date,end_date)
 
 
 
