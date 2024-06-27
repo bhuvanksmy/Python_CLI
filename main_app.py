@@ -20,5 +20,5 @@ if __name__=="__main__":
     while isvalid_year(year) == False:
         # if invalid year ask user to enter year as 4 digit integer YYYY format
         year = input("Enter year in YYYY format:")
-    ls_transaction(zipcode,month,year)
+    #ls_transaction(zipcode,month,year)
     
