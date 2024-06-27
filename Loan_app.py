@@ -106,11 +106,7 @@ def ls_transaction(zipcode,month,year):
     print("Successfully closed the connection")
 
 def get_existing_acc_details(customer_credit_card_no,last_four_digit_SSN):
-    # spark_acc = SparkSession.builder.appName('get_existing_acc_details').getOrCreate()
-    # _select_sql = "(select * from creditcard_capstone.cdw_sapp_customer)"
-    # df_select = spark_acc.read.jdbc(url=mysql_url,table=_select_sql,properties=mysql_props)
-    # df_select.show()
-
+    
     conn =dbconnect.connect(host='localhost',database='creditcard_capstone',user='root',password='password',port='3306')
     # checking the connection established successfully
     if conn.is_connected():
@@ -129,26 +125,6 @@ def get_existing_acc_details(customer_credit_card_no,last_four_digit_SSN):
     mycursor.close() # closing the cursor object connection
     conn.close()
     print("Successfully closed the connection")
-
-# def get_monthly_bill():
-#     conn =dbconnect.connect(host='localhost',database='creditcard_capstone',user='root',password='password',port='3306')
-#     # checking the connection established successfully
-#     if conn.is_connected():
-#         print('Successfully Connected to MySQL database')
-#     mycursor=conn.cursor()
-#     query = ""
-#     # print(query)
-#     mycursor.execute(query)
-#     result = mycursor.fetchall(); # fetch all the values from the mysql database
-#     # Convert to Pandas Dataframe
-#     df = pd.DataFrame(result)
-#     df.columns = ['SSN', 'FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'CREDIT_CARD_NO', 'CUST_PHONE', 'CUST_EMAIL']
-#     # Display the Pandas Dataframe
-#     print(df)
-#     #print(result)
-#     mycursor.close() # closing the cursor object connection
-#     conn.close()
-#     print("Successfully closed the connection")
 
 def update_into_table(customer_credit_card_no,first_name, ssn, updated_first_name,updated_last_name,updated_email,updated_phone):
     try:
@@ -190,3 +166,27 @@ def update_into_table(customer_credit_card_no,first_name, ssn, updated_first_nam
             mycursor.close()
             conn.close()
             print("MySQL connection is closed")
+
+# method to generate a monthly bill for a credit card number for a given month and year
+def get_monthly_bill(credit_card_no,month,year):
+    conn =dbconnect.connect(host='localhost',database='creditcard_capstone',user='root',password='password',port='3306')
+    # checking the connection established successfully
+    if conn.is_connected():
+        print('Successfully Connected to MySQL database')
+    mycursor=conn.cursor()
+    query = """select CREDIT_CARD_NO, TIMEID, CUST_SSN, BRANCH_CODE, TRANSACTION_TYPE, TRANSACTION_VALUE, TRANSACTION_ID from cdw_sapp_credit_card where CREDIT_CARD_NO = %s AND month(TIMEID) = %s AND year(TIMEID) = %s """
+    # print(query)
+    values = (credit_card_no,month,year)
+    mycursor.execute(query,values)
+    result = mycursor.fetchall(); # fetch all the values from the mysql database
+    # Convert to Pandas Dataframe
+    df = pd.DataFrame(result)
+    df.columns = ['CREDIT_CARD_NO',"TIMEID",'SSN', 'BRANCH_CODE', 'TRANSACTION_TYPE', 'TRANSACTION_VALUE', 'TRANSACTION_ID']
+    # Display the Pandas Dataframe
+    print(df)
+    #print(result)
+    mycursor.close() # closing the cursor object connection
+    conn.close()
+    print("Successfully closed the connection")
+    
+
