@@ -57,6 +57,20 @@ if __name__=="__main__":
             update_column = int(input("What customer detail you want to update:(1.FIRST_NAME 2.LAST_NAME 3.CUST_PHONE 4.CUST_EMAIL 5.Done)?"))
         # Calling the update_into_table function to update the new values for the existing customer
         update_into_table(customer_credit_card_no,first_name, last_four_digit_SSN, updated_first_name,updated_last_name,updated_email,updated_phone)
+
+        # generate a monthly bill for a credit card number for a given month and year
+        credit_card_no = input("Enter 16-digit credit card no:")
+        month=int(input("Enter month as 2 digit integer MM format :"))
+        while isvalid_month(month) == False:
+        # if invalid month ask user to enter correct month number again
+            month = int(input("Enter month in number format from 1 to 12:"))
+        # get month MM as user input
+
+        year=input("Enter year in YYYY format:")
+        while isvalid_year(year) == False:
+        # if invalid year ask user to enter year as 4 digit integer YYYY format
+            year = input("Enter year as 2018 in YYYY format:")
+    get_monthly_bill(credit_card_no,month,year)
     
 
 
