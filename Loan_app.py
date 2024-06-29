@@ -211,3 +211,6 @@ def transactions_within_range(start_date,end_date):
     conn.close()
     print("Successfully closed the connection")
 
+
+# method to plot the transaction type has the highest transaction count.
+

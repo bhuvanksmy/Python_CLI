@@ -1,4 +1,5 @@
 from Loan_app import *
+from credir_card_analysis_and_viz import *
 import sys
 if __name__=="__main__": 
     print ('argument list', sys.argv)
@@ -79,6 +80,11 @@ if __name__=="__main__":
     print("Extracting transaction data from {} to {}".format(start_date,end_date))
     transactions_within_range(start_date,end_date)
 
+    # Calculate and plot which transaction type has the highest transaction count.
+    print("Data Analysis and Visualization")
+    plot_highest_transaction_count()
+    top10_States_with_high_customers()
+    top10_customers_with_high_transaction_amount()
 
 
     
