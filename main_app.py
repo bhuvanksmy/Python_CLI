@@ -4,7 +4,8 @@ import sys
 if __name__=="__main__": 
     print ('argument list', sys.argv)
     # load JSON into my sql database
-    load_database()
+    load_json_data_to_database()
+   
     # get zipcode as user input
     zipcode = input("Enter a valid zipcode:")
     while isvalid_zipcode(zipcode) == False:

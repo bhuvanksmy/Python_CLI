@@ -59,7 +59,7 @@ def isvalid_year(year):
         print("Invalid year")
         return False
     
-def load_database():
+def load_json_data_to_database():
     # create the SparkSession
     spark = SparkSession.builder.appName('Capstone_Project').getOrCreate()
     # Reading JSON Customer data 
@@ -75,7 +75,20 @@ def load_database():
     df_creditcard = spark.read.option("multiline","true").json("cdw_sapp_credit.json")
     # Manipulating Credit card data according to the specifications in mapping document.
     df_creditcard=df_creditcard.select("CREDIT_CARD_NO",date_format(make_date(df_creditcard.YEAR,df_creditcard.MONTH,df_creditcard.DAY),"yyyyMMdd").alias("TIMEID"),"CUST_SSN","BRANCH_CODE","TRANSACTION_TYPE","TRANSACTION_VALUE","TRANSACTION_ID")
+    
+    # API Endpoint URL
+    api_url = "https://raw.githubusercontent.com/platformps/LoanDataset/main/loan_data.json"
 
+    # req 4.1 Fetch data from the above API endpoint for the loan application dataset
+    response = requests.get(api_url)
+
+    # req 4.2 status code of the above API endpoint.
+    print(response.status_code)
+
+    if response.status_code == 200:
+        # Convert JSON response to DataFrame
+        json_df = spark.read.json(spark.sparkContext.parallelize([response.json()]))
+    
 
     df_customer.write \
         .jdbc(url=mysql_url,table="cdw_sapp_customer",mode="overwrite",properties=mysql_props)
@@ -83,6 +96,10 @@ def load_database():
         .jdbc(url=mysql_url,table="cdw_sapp_branch",mode="overwrite",properties=mysql_props)
     df_creditcard.write \
         .jdbc(url=mysql_url,table="cdw_sapp_credit_card",mode="overwrite",properties=mysql_props)
+    json_df.write \
+        .jdbc(url=mysql_url, table="CDW_SAPP_loan_application", mode="overwrite", properties=mysql_props)
+    # Stop SparkSession
+    spark.stop()
 
     # get list of transactions made by the customers for the specified zip code,month and year.
 def ls_transaction(zipcode,month,year):

@@ -137,8 +137,8 @@ def top10_customers_with_high_transaction_amount():
         print(str(e))
 
 
-# if __name__=="__main__": 
-#     print("plotting")
-#     plot_highest_transaction_count()
-#     top10_States_with_high_customers()
-#     top10_customers_with_high_transaction_amount()
+if __name__=="__main__": 
+    print("plotting")
+    plot_highest_transaction_count()
+    top10_States_with_high_customers()
+    top10_customers_with_high_transaction_amount()
