@@ -1,9 +1,8 @@
 import findspark
+
 findspark.init()
-import pyspark
 from pyspark.sql import SparkSession
 import requests
-
 
 # Initialize SparkSession
 spark = SparkSession.builder \
@@ -22,7 +21,7 @@ print(response.status_code)
 if response.status_code == 200:
     # Convert JSON response to DataFrame
     json_df = spark.read.json(spark.sparkContext.parallelize([response.json()]))
-    
+
     # Show DataFrame schema and content
     json_df.printSchema()
     json_df.show()
@@ -35,11 +34,10 @@ if response.status_code == 200:
     }
     # JDBC URL for MySQL
     mysql_url = "jdbc:mysql://localhost:3306/creditcard_capstone"
-# req 4.3 load data into MySQL table CDW-SAPP_loan_application in the database. 
+    # req 4.3 load data into MySQL table CDW-SAPP_loan_application in the database.
     json_df.write \
         .jdbc(url=mysql_url, table="CDW_SAPP_loan_application", mode="overwrite", properties=mysql_props)
 else:
     print(f"Failed to fetch data from API. Status code: {response.status_code}")
 # Stop SparkSession
 spark.stop()
-

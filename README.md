@@ -8,7 +8,7 @@ Workflow Diagram of the Requirements.
 The workflow diagram below will help you visualize the flow and scope of this capstone project at a high level.
 
 <div align = "center">
-<img src = "Dataflow.JPG"/>
+<img src = "data/Dataflow.JPG"/>
 </div>
 
 ### Credit Card Dataset Overview.
