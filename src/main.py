@@ -7,23 +7,12 @@ if __name__ == "__main__":
     load_json_data_to_database()
 
     # get zipcode as user input
-    zipcode = input("Enter a valid zipcode:")
-    while not isvalid_zipcode(zipcode):
-        # if invalid zipcode prompt user to re-enter valid zipcode
-        zipcode = input("Enter zipcode as 5 digit integer format:")
-        print("given Zipcode:", zipcode)
-        # get month MM as user input
+    zipcode = get_valid_zipcode()
 
-    month = int(input("Enter month as 2 digit integer MM format :"))
-    while not isvalid_month(month):
-        # if invalid month ask user to enter correct month number again
-        month = int(input("Enter month in number format from 1 to 12:"))
-        # get month MM as user input
+    # get month MM as user input
+    month = get_valid_month()
 
-    year = input("Enter year in YYYY format:")
-    while not isvalid_year(year):
-        # if invalid year ask user to enter year as 4 digit integer YYYY format
-        year = input("Enter year in YYYY format:")
+    year = get_valid_year()
 
     ls_transaction(zipcode, month, year)
     # to get existing account details of a customer

@@ -10,6 +10,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import make_date, expr, date_format
 
 # Define MySQL connection properties
+
 mysql_props = {
     "user": "root",
     "password": "password",
@@ -18,6 +19,8 @@ mysql_props = {
 
 # JDBC URL for MySQL to create new table cdw_sapp_customer and loading data into the table
 mysql_url = "jdbc:mysql://localhost:3306/creditcard_capstone"
+conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
+                         port='3306')
 
 
 # help function
@@ -28,6 +31,31 @@ def help():
     $ ./loan_app ls_trans           # List all the transactions made by customer in specific zipcode for the given month and year
     $ ./loan_app sort               # Sort the list of transaction in descending order """
     sys.stdout.buffer.write(sa.encode('utf8'))
+
+
+def get_valid_zipcode():
+    zipcode = input("Enter a valid zipcode:")
+    while not isvalid_zipcode(zipcode):
+        # if invalid zipcode prompt user to re-enter valid zipcode
+        zipcode = input("Enter zipcode as 5 digit integer format:")
+        print("given Zipcode:", zipcode)
+    return zipcode
+
+
+def get_valid_month():
+    month = int(input("Enter month as 2 digit integer MM format :"))
+    while not isvalid_month(month):
+        # if invalid month ask user to enter correct month number again
+        month = int(input("Enter month in number format from 1 to 12:"))
+    return month
+
+
+def get_valid_year():
+    year = input("Enter year in YYYY format:")
+    while not isvalid_year(year):
+        # if invalid year ask user to enter year as 4 digit integer YYYY format
+        year = input("Enter year in YYYY format:")
+    return year
 
 
 # Validate entered zipcode is in valid format
@@ -119,15 +147,19 @@ def load_json_data_to_database():
 
 
 def ls_transaction(zipcode, month, year):
-    conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
-                             port='3306')
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
+    else:
+        conn.connect()
     mycursor = conn.cursor()
-    query = "SELECT cr.CREDIT_CARD_NO, cr.TIMEID, cr.CUST_SSN, cr.BRANCH_CODE,cu.CUST_ZIP,cr.TRANSACTION_ID, cr.TRANSACTION_TYPE, cr.TRANSACTION_VALUE FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, 4) = " + str(
+    query = ("SELECT cr.CREDIT_CARD_NO, cr.TIMEID, cr.CUST_SSN, cr.BRANCH_CODE,cu.CUST_ZIP,cr.TRANSACTION_ID, "
+             "cr.TRANSACTION_TYPE, cr.TRANSACTION_VALUE FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer "
+             "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
+             "4) = ") + str(
         year) + " AND SUBSTRING(TIMEID, 5, 2) = " + str(month) + " AND cu.cust_zip =" + str(
-        zipcode) + " order by CAST(SUBSTRING(TIMEID, 5, 2) as UNSIGNED),CAST(SUBSTRING(TIMEID, 7, 2) as UNSIGNED),CAST(SUBSTRING(TIMEID, 1, 4) as UNSIGNED) desc"
+        zipcode) + ("order by CAST(SUBSTRING(TIMEID, 5, 2) as UNSIGNED),CAST(SUBSTRING(TIMEID, 7, 2) as UNSIGNED),"
+                    "CAST(SUBSTRING(TIMEID, 1, 4) as UNSIGNED) desc")
     # print(query)
     mycursor.execute(query)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
@@ -143,11 +175,11 @@ def ls_transaction(zipcode, month, year):
 
 
 def get_existing_acc_details(customer_credit_card_no, last_four_digit_SSN):
-    conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
-                             port='3306')
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
+    else:
+        conn.connect()
     mycursor = conn.cursor()
     query = "select SSN, FIRST_NAME, MIDDLE_NAME, LAST_NAME, CREDIT_CARD_NO, CUST_PHONE, CUST_EMAIL from creditcard_capstone.cdw_sapp_customer where CREDIT_CARD_NO = " + customer_credit_card_no + " AND substring(SSN,6,4) = " + last_four_digit_SSN + ""
     # print(query)
@@ -167,7 +199,11 @@ def get_existing_acc_details(customer_credit_card_no, last_four_digit_SSN):
 def update_into_table(customer_credit_card_no, first_name, ssn, updated_first_name, updated_last_name, updated_email,
                       updated_phone):
     try:
-        conn = dbconnect.connect(database='creditcard_capstone', user='root', password='password', port='3306')
+        # checking the connection established successfully
+        if conn.is_connected():
+            print('Successfully Connected to MySQL database')
+        else:
+            conn.connect()
         mycursor = conn.cursor()
         mySql_update_query = """UPDATE creditcard_capstone.cdw_sapp_customer SET """
         count = 0
@@ -209,11 +245,11 @@ def update_into_table(customer_credit_card_no, first_name, ssn, updated_first_na
 
 # method to generate a monthly bill for a credit card number for a given month and year
 def get_monthly_bill(credit_card_no, month, year):
-    conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
-                             port='3306')
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
+    else:
+        conn.connect()
     mycursor = conn.cursor()
     query = """select CREDIT_CARD_NO, TIMEID, CUST_SSN, BRANCH_CODE, TRANSACTION_TYPE, TRANSACTION_VALUE, TRANSACTION_ID from cdw_sapp_credit_card where CREDIT_CARD_NO = %s AND month(TIMEID) = %s AND year(TIMEID) = %s """
     # print(query)
@@ -234,11 +270,11 @@ def get_monthly_bill(credit_card_no, month, year):
 
 # method to display the transactions made by a customer between two dates.
 def transactions_within_range(start_date, end_date):
-    conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
-                             port='3306')
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
+    else:
+        conn.connect()
     mycursor = conn.cursor()
     query = """select distinct TRANSACTION_ID,TRANSACTION_TYPE,TRANSACTION_VALUE, CREDIT_CARD_NO,TIMEID from cdw_sapp_credit_card where TIMEID BETWEEN '%s' AND '%s' """
     # print(query)
