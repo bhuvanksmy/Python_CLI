@@ -27,7 +27,7 @@ if __name__ == "__main__":
     updated_phone = None
     credit_card_no = None
     is_update_required = input("do you want to modify the existing account details of a customer(YES/NO):")
-    if is_update_required.casefold() == 'YES':
+    if is_update_required.upper() == 'YES':
         update_column = int(input(
             "What customer detail you want to update:(1.FIRST_NAME 2.LAST_NAME 3.CUST_EMAIL 4.CUST_PHONE 5.Done)?"))
         while update_column != 5:
