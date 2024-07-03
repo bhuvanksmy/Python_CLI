@@ -56,6 +56,8 @@ select distinct substring(timeid,5,1) from cdw_sapp_credit_card;
  select * from creditcard_capstone.cdw_sapp_customer WHERE 
  CREDIT_CARD_NO = 4210653360481256;
  
+ select distinct(CUST_ZIP) from cdw_sapp_customer order by CUST_ZIP ;
+ 
  update creditcard_capstone.cdw_sapp_customer set last_name='Ayers Test' WHERE CREDIT_CARD_NO = '4210653310356919' and FIRST_NAME='Wilfred' and substring(SSN,6,4)='4431';
  
  UPDATE creditcard_capstone.cdw_sapp_customer SET FIRST_NAME = "William" WHERE CREDIT_CARD_NO = 4210653310356919;
@@ -108,3 +110,5 @@ group by transaction_type
 order by transaction_count desc;
 
 select count(transaction_type) from cdw_sapp_credit_card where transaction_type ='Gas';
+
+select * from cdw_sapp_loan_application;
