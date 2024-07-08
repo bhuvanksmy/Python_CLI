@@ -281,7 +281,7 @@ def top3_months_with_high_transactional_data():
 
 # req 5.4 - Calculate and plot which branch processed the highest total dollar value of healthcare transactions.
 
-def branch_with_highest_dollarvalue_healthcare_transactions():
+def get_branch_with_highest_dollarvalue_healthcare_transactions():
     try:
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
@@ -325,14 +325,3 @@ def branch_with_highest_dollarvalue_healthcare_transactions():
     except Exception as e:
         conn.close()
         print(str(e))
-
-
-if __name__ == "__main__":
-    print("plotting")
-    plot_percentage_for_applications_approved_for_selfemployed()
-    plot_percentage_of_rejections_for_married_male_applicants()
-    top3_months_with_high_transactional_data()
-    branch_with_highest_dollarvalue_healthcare_transactions()
-#     plot_highest_transaction_count()
-#     top10_States_with_high_customers()
-#     top10_customers_with_high_transaction_amount()

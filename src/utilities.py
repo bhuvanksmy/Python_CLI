@@ -149,7 +149,14 @@ def load_json_data_to_database():
     # get list of transactions made by the customers for the specified zip code,month and year.
 
 
-def get_transaction(zipcode, month, year):
+def get_transaction():
+    # get zipcode as user input
+    zipcode = get_valid_zipcode()
+
+    # get month MM as user input
+    month = get_valid_month()
+
+    year = get_valid_year()
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
@@ -161,13 +168,14 @@ def get_transaction(zipcode, month, year):
              "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
              "4) = ") + str(
         year) + " AND SUBSTRING(TIMEID, 5, 2) = " + str(month) + " AND cu.cust_zip =" + str(
-        zipcode) + (" order by TIMEID desc")
+        zipcode) + " order by TIMEID desc"
     # print(query)
     mycursor.execute(query)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    df.columns = ['CREDIT_CARD_NO', 'TIMEID', 'CUST_SSN', 'BRANCH_CODE', 'CUST_ZIP', 'TRANSACTION_ID', 'TRANSACTION_TYPE', 'TRANSACTION_VALUE']
+    df.columns = ['CREDIT_CARD_NO', 'TIMEID', 'CUST_SSN', 'BRANCH_CODE', 'CUST_ZIP', 'TRANSACTION_ID',
+                  'TRANSACTION_TYPE', 'TRANSACTION_VALUE']
     # Display the Pandas Dataframe
     print(df)
     # print(result)
@@ -176,7 +184,9 @@ def get_transaction(zipcode, month, year):
     print("Successfully closed the connection")
 
 
-def get_existing_acc_details(customer_credit_card_no, last_four_digit_SSN):
+def get_existing_acc_details():
+    customer_credit_card_no, last_four_digit_SSN = input(
+        "Enter Customer Credit Card NO & last_four_digit_SSN :").split()
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
@@ -198,9 +208,35 @@ def get_existing_acc_details(customer_credit_card_no, last_four_digit_SSN):
     print("Successfully closed the connection")
 
 
-def modify_existing_acc_details(customer_credit_card_no, first_name, ssn, updated_first_name, updated_last_name, updated_email,
-                                updated_phone):
+def modify_existing_acc_details():
+    updated_first_name = None
+    updated_last_name = None
+    updated_email = None
+    updated_phone = None
+    customer_credit_card_no, last_four_digit_SSN = input(
+        "Enter Customer Credit Card NO & last_four_digit_SSN :").split()
     try:
+        update_column = int(input(
+            "What customer detail you want to update:(1.FIRST_NAME 2.LAST_NAME 3.CUST_EMAIL 4.CUST_PHONE 5.Done)?"))
+        while update_column != 5:
+            if update_column == 1:
+                updated_first_name = input("Enter updated value for the First Name:")
+                print(updated_first_name)
+            elif update_column == 2:
+                updated_last_name = input("Enter updated value for the Last Name:")
+                print(updated_last_name)
+            elif update_column == 3:
+                updated_email = input("Enter updated value for the email:")
+                print(updated_email)
+            elif update_column == 4:
+                updated_phone = input("Enter updated value for the phone number:")
+                print(updated_phone)
+            elif update_column == 5:
+                print("Done. Got all the new values to update for the existing customer")
+            else:
+                print("Invalid Input")
+            update_column = int(input(
+                "What customer detail you want to update:(1.FIRST_NAME 2.LAST_NAME 3.CUST_PHONE 4.CUST_EMAIL 5.Done)?"))
         # checking the connection established successfully
         if conn.is_connected():
             print('Successfully Connected to MySQL database')
@@ -229,8 +265,8 @@ def modify_existing_acc_details(customer_credit_card_no, first_name, ssn, update
             mySql_update_query = mySql_update_query + """ CUST_PHONE = %s """
             count = count + 1
             parameters = parameters + (updated_phone,)
-        mySql_update_query = mySql_update_query + """ WHERE CREDIT_CARD_NO = %s and FIRST_NAME=%s and substring(SSN,6,4)=%s """
-        parameters = parameters + (customer_credit_card_no, first_name, ssn,)
+        mySql_update_query = mySql_update_query + """ WHERE CREDIT_CARD_NO = %s and substring(SSN,6,4)=%s """
+        parameters = parameters + (customer_credit_card_no, last_four_digit_SSN,)
         print(mySql_update_query)
         print(parameters)
         mycursor.execute(mySql_update_query, parameters)
@@ -246,7 +282,19 @@ def modify_existing_acc_details(customer_credit_card_no, first_name, ssn, update
 
 
 # method to generate a monthly bill for a credit card number for a given month and year
-def get_monthly_bill(credit_card_no, month, year):
+def get_monthly_bill():
+    # generate a monthly bill for a credit card number for a given month and year
+    credit_card_no = input("Enter 16-digit credit card no:")
+    month = int(input("Enter month as 2 digit integer MM format :"))
+    while not isvalid_month(month):
+        # if invalid month ask user to enter correct month number again
+        month = int(input("Enter month in number format from 1 to 12:"))
+    # get month MM as user input
+
+    year = input("Enter year in YYYY format:")
+    while not isvalid_year(year):
+        # if invalid year ask user to enter year as 4 digit integer YYYY format
+        year = input("Enter year as 2018 in YYYY format:")
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
@@ -271,7 +319,12 @@ def get_monthly_bill(credit_card_no, month, year):
 
 
 # method to display the transactions made by a customer between two dates.
-def get_transactions_within_range(start_date, end_date):
+def get_transactions_within_range():
+    # calling the method to display the transactions made by a customer between two dates.
+    print("Enter the start & End date to pull the transaction made by the customer for specific date range:")
+    start_date = int(input("Enter Start Date:"))
+    end_date = int(input("Enter End Date:"))
+    print("Extracting transaction data from {} to {}".format(start_date, end_date))
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
@@ -292,5 +345,3 @@ def get_transactions_within_range(start_date, end_date):
     mycursor.close()  # closing the cursor object connection
     conn.close()
     print("Successfully closed the connection")
-
-# method to plot the transaction type has the highest transaction count.

@@ -51,7 +51,7 @@ class Test(TestCase):
     # ●	Calculate and plot which branch processed the highest total dollar value of healthcare transactions. Use the ideal chart or graph to represent this data.
     # (hint: use `CDW_SAPP_CREDIT_CARD` table)
     # Note: Take a screenshot of the graph.  Save a copy of the visualization, making sure it is PROPERLY NAMED!
-    def test_branch_with_highest_dollarvalue_healthcare_transactions(self):
-        result = branch_with_highest_dollarvalue_healthcare_transactions()
+    def test_get_branch_with_highest_dollarvalue_healthcare_transactions(self):
+        result = get_branch_with_highest_dollarvalue_healthcare_transactions()
         self.assertIsNone(result)
 
