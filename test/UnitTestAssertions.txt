@@ -1,0 +1,42 @@
+Here are 10 commonly used assertion methods for Python functions using the unittest module:
+
+1. assertEqual(a, b): Checks if a and b are equal.
+
+self.assertEqual(10, add(5, 5))  # Passes if add(5, 5) equals 10
+
+2. assertTrue(x): Checks if x evaluates to True.
+
+self.assertTrue(result) # Passes if result is True
+
+3. assertFalse(x): Checks if x evaluates to False.
+
+self.assertFalse(error)  # Passes if error is False
+
+4. assertIs(a, b): Checks if a is the same object as b.
+
+self.assertIs(result, expected_result)  # Passes if result is expected_result (same object)
+
+5. assertIsNone(x): Checks if x is None.
+
+self.assertIsNone(result)  # Passes if result is None
+
+6. assertIsNotNone(x): Checks if x is not None.
+
+self.assertIsNotNone(result)  # Passes if result is not None
+
+7. assertIn(a, b): Checks if a is present in b.
+
+self.assertIn(item, my_list)  # Passes if item is present in my_list
+
+8. assertNotIn(a, b): Checks if a is not present in b.
+
+self.assertNotIn(item, my_list)  # Passes if item is not present in my_list
+
+9. assertRaises(exception, callable, *args, **kwargs): Checks if calling callable raises exception.
+
+self.assertRaises(ValueError, divide, 10, 0)  # Passes if calling divide(10, 0) raises ValueError
+
+10. assertAlmostEqual(a, b, places): Checks if a and b are approximately equal up to a specified number of decimal places.
+
+self.assertAlmostEqual(result, expected_result, places=2)  # Passes if result and expected_result are approximately equal up to 2 decimal places
+

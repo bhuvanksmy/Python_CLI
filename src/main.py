@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     year = get_valid_year()
 
-    ls_transaction(zipcode, month, year)
+    get_transaction(zipcode, month, year)
     # to get existing account details of a customer
     # prompt user to input Credit card #, first name & last 4 digit of SSN
     customer_credit_card_no, last_four_digit_SSN, first_name = input(
@@ -50,8 +50,8 @@ if __name__ == "__main__":
             update_column = int(input(
                 "What customer detail you want to update:(1.FIRST_NAME 2.LAST_NAME 3.CUST_PHONE 4.CUST_EMAIL 5.Done)?"))
         # Calling the update_into_table function to update the new values for the existing customer
-        update_into_table(customer_credit_card_no, first_name, last_four_digit_SSN, updated_first_name,
-                          updated_last_name, updated_email, updated_phone)
+        modify_existing_acc_details(customer_credit_card_no, first_name, last_four_digit_SSN, updated_first_name,
+                                    updated_last_name, updated_email, updated_phone)
 
         # generate a monthly bill for a credit card number for a given month and year
         credit_card_no = input("Enter 16-digit credit card no:")
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     start_date = int(input("Enter Start Date:"))
     end_date = int(input("Enter End Date:"))
     print("Extracting transaction data from {} to {}".format(start_date, end_date))
-    transactions_within_range(start_date, end_date)
+    get_transactions_within_range(start_date, end_date)
 
     # Calculate and plot which transaction type has the highest transaction count.
     print("Data Analysis and Visualization")

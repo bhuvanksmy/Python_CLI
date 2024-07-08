@@ -9,6 +9,9 @@ from mysql.connector import Error
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import make_date, expr, date_format
 
+pd.set_option('display.max_columns', None)
+pd.set_option('max_colwidth', None)
+
 # Define MySQL connection properties
 
 mysql_props = {
@@ -146,7 +149,7 @@ def load_json_data_to_database():
     # get list of transactions made by the customers for the specified zip code,month and year.
 
 
-def ls_transaction(zipcode, month, year):
+def get_transaction(zipcode, month, year):
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
@@ -158,14 +161,13 @@ def ls_transaction(zipcode, month, year):
              "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
              "4) = ") + str(
         year) + " AND SUBSTRING(TIMEID, 5, 2) = " + str(month) + " AND cu.cust_zip =" + str(
-        zipcode) + ("order by CAST(SUBSTRING(TIMEID, 5, 2) as UNSIGNED),CAST(SUBSTRING(TIMEID, 7, 2) as UNSIGNED),"
-                    "CAST(SUBSTRING(TIMEID, 1, 4) as UNSIGNED) desc")
+        zipcode) + (" order by TIMEID desc")
     # print(query)
     mycursor.execute(query)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-
+    df.columns = ['CREDIT_CARD_NO', 'TIMEID', 'CUST_SSN', 'BRANCH_CODE', 'CUST_ZIP', 'TRANSACTION_ID', 'TRANSACTION_TYPE', 'TRANSACTION_VALUE']
     # Display the Pandas Dataframe
     print(df)
     # print(result)
@@ -196,8 +198,8 @@ def get_existing_acc_details(customer_credit_card_no, last_four_digit_SSN):
     print("Successfully closed the connection")
 
 
-def update_into_table(customer_credit_card_no, first_name, ssn, updated_first_name, updated_last_name, updated_email,
-                      updated_phone):
+def modify_existing_acc_details(customer_credit_card_no, first_name, ssn, updated_first_name, updated_last_name, updated_email,
+                                updated_phone):
     try:
         # checking the connection established successfully
         if conn.is_connected():
@@ -269,7 +271,7 @@ def get_monthly_bill(credit_card_no, month, year):
 
 
 # method to display the transactions made by a customer between two dates.
-def transactions_within_range(start_date, end_date):
+def get_transactions_within_range(start_date, end_date):
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
