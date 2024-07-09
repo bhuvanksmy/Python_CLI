@@ -18,16 +18,17 @@ def display_menu(menu):
 def main():
     # Create a menu dictionary where the key is an integer number and the
     # value is a function name.
-    functions_names = [load_json_data_to_database, get_valid_zipcode, get_valid_month, get_valid_year, get_transaction,
+    functions_names = [load_json_data_to_database, get_valid_zipcode, get_valid_month, get_valid_year,
+                       get_transaction,
                        get_existing_acc_details, modify_existing_acc_details, get_monthly_bill,
-                       get_transactions_within_range, plot_highest_transaction_count, top10_States_with_high_customers,
+                       get_transactions_within_range, plot_highest_transaction_count,
+                       top10_States_with_high_customers,
                        top10_customers_with_high_transaction_amount,
                        plot_percentage_for_applications_approved_for_selfemployed,
                        plot_percentage_of_rejections_for_married_male_applicants,
-                       top10_customers_with_high_transaction_amount,
+                       top3_months_with_high_transactional_data,
                        get_branch_with_highest_dollarvalue_healthcare_transactions, done]
     menu_items = dict(enumerate(functions_names, start=1))
-    print("Application Started")
     while True:
         display_menu(menu_items)
         selection = int(
@@ -43,4 +44,5 @@ def done():
 
 
 if __name__ == "__main__":
+    print("Application Started")
     main()

@@ -310,7 +310,7 @@ def get_branch_with_highest_dollarvalue_healthcare_transactions():
                            size=15, xytext=(0, 8),
                            textcoords='offset points')
         # Title
-        plt.title(" Top 3 months with highest volume of transactional data")
+        plt.title("Branch with highest total dollar value of healthcare transactions")
         # Setting the x-axis label and its size
         plt.xlabel("BRANCH", size=13)
 

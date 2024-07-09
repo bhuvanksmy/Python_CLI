@@ -8,7 +8,7 @@ Workflow Diagram of the Requirements.
 The workflow diagram below will help you visualize the flow and scope of this capstone project at a high level.
 
 <div align = "center">
-<img src = "data/Dataflow.JPG"/>
+<img src = "images/Dataflow.JPG"/>
 </div>
 
 ### Credit Card Dataset Overview.
@@ -20,7 +20,9 @@ A credit card is issued to users to enact the payment system. It allows the card
     3)CDW_SAPP_BRANCH.JSON: Each branch’s information and details are recorded in this file. 
 
 ### Business Requirements - ETL
-
+<div align = "center">
+<img src = "images/ApplicationMenu.jpeg"/>
+</div>
 ### 1. Functional Requirements - Load Credit Card Database (SQL)
 
 ### 1.1 Functional Requirement
@@ -58,8 +60,19 @@ Created user defined function that accomplishes the following tasks:
     Data Analysis and visualization are done using the Matlpoltlib & Seaborn python libraries. 
 
 ### 3.1 Calculate and plot which transaction type has the highest transaction count.
+<div align = "center">
+<img src = "images/plot_highest_transaction_count.jpeg"/>
+</div>
+
 ### 3.2 Calculate and plot top 10 states with the highest number of customers.
+<div align = "center">
+<img src = "images/top10_States_with_high_customers.jpeg"/>
+</div>
+
 ### 3.3 Calculate the total transaction sum for each customer based on their individual transactions. Identify the top 10 customers with the highest transaction amounts (in dollar value). Create a plot to showcase these top customers and their transaction sums.
+<div align = "center">
+<img src = "images/top10_customers_with_high_transaction_amount.jpeg"/>
+</div>
 
 ### 4. Functional Requirements - LOAN Application Dataset
 
@@ -78,10 +91,24 @@ Banks offer home loans across urban, semi-urban, and rural areas. Customers appl
 ### Create an appropriate visualization to perform the following task 
 
 ### 5.1 - Calculate and plot the percentage of applications approved for self-employed applicants. 
-### 5.2 - Calculate the percentage of rejection for married male applicants. Use the ideal chart or graph to represent this data.
-### - 5.3 - Calculate and plot the top three months with the largest volume of transaction data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
-### - 5.4 - Calculate and plot which branch processed the highest total dollar value of healthcare transactions. Use the ideal chart or graph to represent this data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
+<div align = "center">
+<img src = "images/plot_percentage_for_applications_approved_for_selfemployed.jpeg"/>
+</div>
 
+### 5.2 - Calculate the percentage of rejection for married male applicants. Use the ideal chart or graph to represent this data.
+<div align = "center">
+<img src = "images/plot_percentage_of_rejections_for_married_male_applicants.jpeg"/>
+</div>
+
+### - 5.3 - Calculate and plot the top three months with the largest volume of transaction data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
+<div align = "center">
+<img src = "images/top3_months_with_high_transactional_data.jpeg"/>
+</div>
+
+### - 5.4 - Calculate and plot which branch processed the highest total dollar value of healthcare transactions. Use the ideal chart or graph to represent this data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
+<div align = "center">
+<img src = "images/get_branch_with_highest_dollarvalue_healthcare_transactions.jpeg"/>
+</div>
 
 
 

@@ -1,6 +1,7 @@
 from unittest import TestCase
 from src.visualization import *
 
+
 class Test(TestCase):
 
     # Functional Requirements 3.1	Create an appropriate visualization to perform the following task -
@@ -43,7 +44,7 @@ class Test(TestCase):
     # ●	Calculate and plot the top three months with the largest volume of transaction data. Use the ideal chart or graph to represent this data.
     # (hint: use `CDW_SAPP_CREDIT_CARD` table)
     # Note: Take a screenshot of the graph.  Save a copy of the visualization, making sure it is PROPERLY NAMED!
-    def test_top10_customers_with_high_transaction_amount(self):
+    def test_top3_months_with_high_transactional_data(self):
         result = top3_months_with_high_transactional_data()
         self.assertIsNone(result)
 
@@ -54,4 +55,3 @@ class Test(TestCase):
     def test_get_branch_with_highest_dollarvalue_healthcare_transactions(self):
         result = get_branch_with_highest_dollarvalue_healthcare_transactions()
         self.assertIsNone(result)
-
