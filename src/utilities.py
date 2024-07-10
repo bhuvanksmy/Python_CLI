@@ -265,7 +265,7 @@ def modify_existing_acc_details():
             mySql_update_query = mySql_update_query + """ CUST_PHONE = %s """
             count = count + 1
             parameters = parameters + (updated_phone,)
-        mySql_update_query = mySql_update_query + """ WHERE CREDIT_CARD_NO = %s and substring(SSN,6,4)=%s """
+        mySql_update_query = mySql_update_query + """, LAST_UPDATED=concat(date_format(now(),'%Y-%m-%dT%T.000'),time_format(timediff(now(),utc_timestamp),'%H:%i')) WHERE CREDIT_CARD_NO = %s and substring(SSN,6,4)=%s """
         parameters = parameters + (customer_credit_card_no, last_four_digit_SSN,)
         print(mySql_update_query)
         print(parameters)
