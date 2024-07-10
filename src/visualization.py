@@ -310,7 +310,7 @@ def get_branch_with_highest_dollarvalue_healthcare_transactions():
                            size=15, xytext=(0, 8),
                            textcoords='offset points')
         # Title
-        plt.title("Branch with highest total dollar value of healthcare transactions")
+        plt.title(" Top 3 months with highest volume of transactional data")
         # Setting the x-axis label and its size
         plt.xlabel("BRANCH", size=13)
 
@@ -325,3 +325,14 @@ def get_branch_with_highest_dollarvalue_healthcare_transactions():
     except Exception as e:
         conn.close()
         print(str(e))
+
+
+if __name__ == "__main__":
+    print("plotting")
+    # plot_percentage_for_applications_approved_for_selfemployed()
+    # plot_percentage_of_rejections_for_married_male_applicants()
+    # top3_months_with_high_transactional_data()
+    # branch_with_highest_dollarvalue_healthcare_transactions()
+#     plot_highest_transaction_count()
+#     top10_States_with_high_customers()
+#     top10_customers_with_high_transaction_amount()
