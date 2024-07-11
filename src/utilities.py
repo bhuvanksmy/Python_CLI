@@ -163,7 +163,7 @@ def get_transaction():
     else:
         conn.connect()
     mycursor = conn.cursor()
-    query = ("SELECT cr.CREDIT_CARD_NO, cr.TIMEID, cr.CUST_SSN, cr.BRANCH_CODE,cu.CUST_ZIP,cr.TRANSACTION_ID, "
+    query = ("SELECT cr.TRANSACTION_ID,cr.CREDIT_CARD_NO, cr.TIMEID as TRANSACTION_DATE,"
              "cr.TRANSACTION_TYPE, cr.TRANSACTION_VALUE FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer "
              "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
              "4) = ") + str(
@@ -174,11 +174,31 @@ def get_transaction():
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    df.columns = ['CREDIT_CARD_NO', 'TIMEID', 'CUST_SSN', 'BRANCH_CODE', 'CUST_ZIP', 'TRANSACTION_ID',
-                  'TRANSACTION_TYPE', 'TRANSACTION_VALUE']
+    print("-----------------------------------------------------------------------------------------")
+    print("Transactions")
+    print("-----------------------------------------------------------------------------------------")
+    df.columns = ['TRANSACTION_ID','CREDIT_CARD#', 'TRANSACTION_DATE', 
+                  'TRANSACTION_TYPE', 'TRANS_VALUE']
     # Display the Pandas Dataframe
+    df.style.hide(axis=0)
     print(df)
     # print(result)
+    total_amount_query = ("SELECT sum(cr.TRANSACTION_VALUE) as Total_Amount  FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer "
+             "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
+             "4) = ") + str(
+        year) + " AND SUBSTRING(TIMEID, 5, 2) = " + str(month) + " AND cu.cust_zip =" + str(
+        zipcode) + " "
+    # print(query)
+    mycursor.execute(total_amount_query)
+    total_amount_result = mycursor.fetchall();  # fetch all the values from the mysql database
+    # Convert to Pandas Dataframe
+    df1 = pd.DataFrame(total_amount_result)
+    # print("-----------------------------------------------------------------------------------------")
+    df1.columns = ['Total_Amount']
+    print("-----------------------------------------------------------------------------------------")
+    # Display the Pandas Dataframe
+    print(df1)
+    print("-----------------------------------------------------------------------------------------")
     mycursor.close()  # closing the cursor object connection
     conn.close()
     print("Successfully closed the connection")

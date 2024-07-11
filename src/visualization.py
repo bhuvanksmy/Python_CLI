@@ -216,7 +216,7 @@ def plot_percentage_of_rejections_for_married_male_applicants():
         palette_color = sns.color_palette('bright')
 
         # plotting data on chart 
-        plt.pie(x, labels=keys, colors=palette_color, autopct='%.0f%%', startangle=90)
+        plt.pie(x, labels=keys, colors=palette_color, startangle=90)
 
         plt.legend(loc='upper right')
 
@@ -267,7 +267,7 @@ def top3_months_with_high_transactional_data():
         plt.xlabel("MONTH", size=13)
 
         # Setting the y-axis label and its size
-        plt.ylabel("TRANSACTION_VALUE", size=13)
+        plt.ylabel("NO_OF_TRANSACTIONS", size=13)
 
         # Finally plotting the graph
         plt.show()
@@ -312,10 +312,10 @@ def get_branch_with_highest_dollarvalue_healthcare_transactions():
         # Title
         plt.title("Branch with highest total dollar value of healthcare transactions")
         # Setting the x-axis label and its size
-        plt.xlabel("BRANCH", size=13)
+        plt.xlabel("BRANCH_CITY", size=13)
 
         # Setting the y-axis label and its size
-        plt.ylabel("TRANSACTION_VALUE", size=13)
+        plt.ylabel("TRANSACTION_VALUE(in dollars)", size=13)
 
         # Finally plotting the graph
         plt.show()
