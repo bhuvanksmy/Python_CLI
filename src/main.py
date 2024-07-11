@@ -35,7 +35,7 @@ def main():
             input("Please enter your selection number: "))  # Get function key
         selected_value = menu_items[selection]  # Gets the function name
         selected_value()  # add parentheses to call the function
-        system('cls')
+        # system('cls')
 
 
 def done():
