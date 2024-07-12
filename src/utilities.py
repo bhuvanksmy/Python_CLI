@@ -8,9 +8,11 @@ import requests
 from mysql.connector import Error
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import make_date, expr, date_format
+from tabulate import tabulate
+import calendar
 
-pd.set_option('display.max_columns', None)
-pd.set_option('max_colwidth', None)
+# pd.set_option('display.max_columns', None)
+# pd.set_option('max_colwidth', None)
 
 # Define MySQL connection properties
 
@@ -25,43 +27,33 @@ mysql_url = "jdbc:mysql://localhost:3306/creditcard_capstone"
 conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                          port='3306')
 
-
-# help function
-def help():
-    sa = """ Usage:- 
-    $ ./loan_app validate_zipcode   # Validate entered zipcode is in valid format
-    $ ./loan_app validate_monthyear # Validate entered Month & year are in valid format
-    $ ./loan_app ls_trans           # List all the transactions made by customer in specific zipcode for the given month and year
-    $ ./loan_app sort               # Sort the list of transaction in descending order """
-    sys.stdout.buffer.write(sa.encode('utf8'))
-
-
+# getting zipcode from the user
 def get_valid_zipcode():
     zipcode = input("Enter a valid zipcode:")
-    while not isvalid_zipcode(zipcode):
+    while not isvalid_zipcode(zipcode):# calling the isvalid_zipcode() to validate zipcode 
         # if invalid zipcode prompt user to re-enter valid zipcode
         zipcode = input("Enter zipcode as 5 digit integer format:")
         print("given Zipcode:", zipcode)
     return zipcode
 
-
+# getting month from the user
 def get_valid_month():
     month = int(input("Enter month as 2 digit integer MM format :"))
-    while not isvalid_month(month):
+    while not isvalid_month(month):# calling the isvalid_month() to validate month
         # if invalid month ask user to enter correct month number again
         month = int(input("Enter month in number format from 1 to 12:"))
     return month
 
-
+# # getting year from the user
 def get_valid_year():
     year = input("Enter year in YYYY format:")
-    while not isvalid_year(year):
+    while not isvalid_year(year): # calling the isvalid_year() to validate year
         # if invalid year ask user to enter year as 4 digit integer YYYY format
         year = input("Enter year in YYYY format:")
     return year
 
 
-# Validate entered zipcode is in valid format
+# Validate entered zipcode is in correct format
 def isvalid_zipcode(z):
     pattern = r"^\d{5}$"
     match = re.match(pattern, z)
@@ -71,10 +63,9 @@ def isvalid_zipcode(z):
     else:
         print("Please enter the valid 5-digit zip code format")
         return False
+    
 
-    # Validate entered month is in valid format(1-12)
-
-
+# Validate entered month is in valid format(1-12)
 def isvalid_month(month):
     if month >= 1 and month <= 12:
         print("valid Month")
@@ -86,7 +77,7 @@ def isvalid_month(month):
 
 # Validate entered year is in valid YYYY format
 def isvalid_year(year):
-    if len(year) == 4 and year.isdigit() == True:
+    if len(year) == 4 and year.isdigit() == True and year ==  '2018':
         print("valid year")
         return True
     else:
@@ -95,6 +86,7 @@ def isvalid_year(year):
 
 
 def load_json_data_to_database():
+    print("Loading the Credit Card Data & Loan Application Data into MySQL Database")
     # create the SparkSession
     spark = SparkSession.builder.appName('Capstone_Project').getOrCreate()
     # Reading JSON Customer data 
@@ -129,7 +121,7 @@ def load_json_data_to_database():
     response = requests.get(api_url)
 
     # req 4.2 status code of the above API endpoint.
-    print(response.status_code)
+    print("API Status Code : " + str(response.status_code))
 
     if response.status_code == 200:
         # Convert JSON response to DataFrame
@@ -145,10 +137,10 @@ def load_json_data_to_database():
         .jdbc(url=mysql_url, table="CDW_SAPP_loan_application", mode="overwrite", properties=mysql_props)
     # Stop SparkSession
     spark.stop()
-
+    print("Successfully loaded the data into Database")
     # get list of transactions made by the customers for the specified zip code,month and year.
 
-
+# method to get the list of transactions made by the customers for the specific zipcode for given month and year.
 def get_transaction():
     # get zipcode as user input
     zipcode = get_valid_zipcode()
@@ -159,29 +151,31 @@ def get_transaction():
     year = get_valid_year()
     # checking the connection established successfully
     if conn.is_connected():
-        print('Successfully Connected to MySQL database')
+        print(' ')
     else:
         conn.connect()
     mycursor = conn.cursor()
+    #Query to get the list of transactions from Mysql Database.
     query = ("SELECT cr.TRANSACTION_ID,cr.CREDIT_CARD_NO, cr.TIMEID as TRANSACTION_DATE,"
              "cr.TRANSACTION_TYPE, cr.TRANSACTION_VALUE FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer "
              "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
              "4) = ") + str(
         year) + " AND SUBSTRING(TIMEID, 5, 2) = " + str(month) + " AND cu.cust_zip =" + str(
         zipcode) + " order by TIMEID desc"
-    # print(query)
+   
     mycursor.execute(query)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    print("-----------------------------------------------------------------------------------------")
-    print("Transactions")
-    print("-----------------------------------------------------------------------------------------")
-    df.columns = ['TRANSACTION_ID','CREDIT_CARD#', 'TRANSACTION_DATE', 
-                  'TRANSACTION_TYPE', 'TRANS_VALUE']
+    print("--------------------------------------------------------------------------------------------------")
+    print("List of Transactions made in the zipcode  "+ str(zipcode) +" for "+calendar.month_name[month]+" "+str(year))
+   
+    df.columns = ['TRANSACTION_ID','CREDIT_CARD_NO', 'TRANSACTION_DATE', 
+                  'TRANSACTION_TYPE', 'TRANSACTION_VALUE']
     # Display the Pandas Dataframe
-    df.style.hide(axis=0)
-    print(df)
+    
+    # Display the pandas dataframe in Table format
+    print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
     # print(result)
     total_amount_query = ("SELECT sum(cr.TRANSACTION_VALUE) as Total_Amount  FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer "
              "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
@@ -195,10 +189,11 @@ def get_transaction():
     df1 = pd.DataFrame(total_amount_result)
     # print("-----------------------------------------------------------------------------------------")
     df1.columns = ['Total_Amount']
-    print("-----------------------------------------------------------------------------------------")
+    # print("-------------------------------------------------------------------------------------------------")
     # Display the Pandas Dataframe
-    print(df1)
-    print("-----------------------------------------------------------------------------------------")
+    #print(df1.to_string(index=False))
+    print(tabulate(df1, headers = 'keys', tablefmt = 'psql',showindex=False))
+    print("-------------------------------------------------------------------------------------------------")
     mycursor.close()  # closing the cursor object connection
     conn.close()
     print("Successfully closed the connection")
@@ -209,7 +204,7 @@ def get_existing_acc_details():
         "Enter Customer Credit Card NO & last_four_digit_SSN :").split()
     # checking the connection established successfully
     if conn.is_connected():
-        print('Successfully Connected to MySQL database')
+        print(' ')
     else:
         conn.connect()
     mycursor = conn.cursor()
@@ -221,11 +216,11 @@ def get_existing_acc_details():
     df = pd.DataFrame(result)
     df.columns = ['SSN', 'FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'CREDIT_CARD_NO', 'CUST_PHONE', 'CUST_EMAIL']
     # Display the Pandas Dataframe
-    print(df)
+    print(tabulate(df, headers = 'keys', tablefmt = 'psql',showindex=False))
     # print(result)
     mycursor.close()  # closing the cursor object connection
     conn.close()
-    print("Successfully closed the connection")
+    #print("Successfully closed the connection")
 
 
 def modify_existing_acc_details():
