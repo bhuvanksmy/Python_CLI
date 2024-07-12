@@ -187,13 +187,14 @@ def get_transaction():
     total_amount_result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df1 = pd.DataFrame(total_amount_result)
-    # print("-----------------------------------------------------------------------------------------")
-    df1.columns = ['Total_Amount']
-    # print("-------------------------------------------------------------------------------------------------")
+    # print("------------------------------------------------------------------------------------------------")
+    #df1.columns = ['Total_Amount']
+    #print("-------------------------------------------------------------------------------------------------")
     # Display the Pandas Dataframe
     #print(df1.to_string(index=False))
-    print(tabulate(df1, headers = 'keys', tablefmt = 'psql',showindex=False))
-    print("-------------------------------------------------------------------------------------------------")
+    #tabulate(df1, tablefmt = 'psql',showindex=False)
+    print("                                                                          Total_Amount : ",df1.iat[0,0])
+    print("------------------------------------------------------------------------------------------------------------")
     mycursor.close()  # closing the cursor object connection
     conn.close()
     print("Successfully closed the connection")
@@ -208,13 +209,13 @@ def get_existing_acc_details():
     else:
         conn.connect()
     mycursor = conn.cursor()
-    query = "select SSN, FIRST_NAME, MIDDLE_NAME, LAST_NAME, CREDIT_CARD_NO, CUST_PHONE, CUST_EMAIL from creditcard_capstone.cdw_sapp_customer where CREDIT_CARD_NO = " + customer_credit_card_no + " AND substring(SSN,6,4) = " + last_four_digit_SSN + ""
+    query = "select FIRST_NAME, MIDDLE_NAME, LAST_NAME, FULL_STREET_ADDRESS,CUST_CITY,CUST_STATE,CUST_PHONE, CUST_EMAIL from creditcard_capstone.cdw_sapp_customer where CREDIT_CARD_NO = " + customer_credit_card_no + " AND substring(SSN,6,4) = " + last_four_digit_SSN + ""
     # print(query)
     mycursor.execute(query)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    df.columns = ['SSN', 'FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'CREDIT_CARD_NO', 'CUST_PHONE', 'CUST_EMAIL']
+    df.columns = ['FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'FULL_STREET_ADDRESS','CUST_CITY','CUST_STATE','CUST_PHONE', 'CUST_EMAIL']
     # Display the Pandas Dataframe
     print(tabulate(df, headers = 'keys', tablefmt = 'psql',showindex=False))
     # print(result)
