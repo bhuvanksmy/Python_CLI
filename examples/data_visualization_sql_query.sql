@@ -7,6 +7,7 @@ select month(TIMEID),round(sum(TRANSACTION_VALUE)) from cdw_sapp_credit_card gro
 
 -- 5.5 - Calculate and plot which branch processed the highest total dollar value of healthcare transactions
 select distinct cr.BRANCH_CODE,br.BRANCH_CITY,cr.TRANSACTIONAL_VALUE from cdw_sapp_branch br inner join (select BRANCH_CODE,round(sum(TRANSACTION_VALUE)) as TRANSACTIONAL_VALUE from cdw_sapp_credit_card where TRANSACTION_TYPE = 'Healthcare' group by BRANCH_CODE order by round(sum(TRANSACTION_VALUE)) desc ) cr ON  br.BRANCH_CODE = cr.BRANCH_CODE order by cr.TRANSACTIONAL_VALUE desc;
+select distinct cr.BRANCH_CODE,br.BRANCH_CITY,cr.TRANSACTIONAL_VALUE from cdw_sapp_branch br inner join (select BRANCH_CODE,round(sum(TRANSACTION_VALUE)) as TRANSACTIONAL_VALUE from cdw_sapp_credit_card where TRANSACTION_TYPE = 'Healthcare' group by BRANCH_CODE order by round(sum(TRANSACTION_VALUE)) desc ) cr ON  br.BRANCH_CODE = cr.BRANCH_CODE order by cr.TRANSACTIONAL_VALUE desc;
 
 select BRANCH_CODE,round(sum(TRANSACTION_VALUE)) as TRANSACTIONAL_VALUE from cdw_sapp_credit_card where TRANSACTION_TYPE = 'Healthcare'
 group by BRANCH_CODE
@@ -15,3 +16,7 @@ order by round(sum(TRANSACTION_VALUE)) desc;
 select * from cdw_sapp_branch;
 
 select * from cdw_sapp_branch;
+
+ -- 5.4 - Calculate and plot the top three months with the largest volume of transaction data
+select month(TIMEID),count(TRANSACTION_ID) from cdw_sapp_credit_card 
+group by month(TIMEID) order by count(TRANSACTION_ID) desc limit 3

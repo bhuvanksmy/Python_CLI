@@ -167,7 +167,7 @@ def get_transaction():
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    print("--------------------------------------------------------------------------------------------------")
+    print("--------------------------------------------------------------------------------------------------------")
     print("List of Transactions made in the zipcode  "+ str(zipcode) +" for "+calendar.month_name[month]+" "+str(year))
    
     df.columns = ['TRANSACTION_ID','CREDIT_CARD_NO', 'TRANSACTION_DATE', 
@@ -176,25 +176,7 @@ def get_transaction():
     
     # Display the pandas dataframe in Table format
     print(tabulate(df, headers = 'keys', tablefmt = 'psql'))
-    # print(result)
-    total_amount_query = ("SELECT sum(cr.TRANSACTION_VALUE) as Total_Amount  FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer "
-             "cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE SUBSTRING(TIMEID, 1, "
-             "4) = ") + str(
-        year) + " AND SUBSTRING(TIMEID, 5, 2) = " + str(month) + " AND cu.cust_zip =" + str(
-        zipcode) + " "
-    # print(query)
-    mycursor.execute(total_amount_query)
-    total_amount_result = mycursor.fetchall();  # fetch all the values from the mysql database
-    # Convert to Pandas Dataframe
-    df1 = pd.DataFrame(total_amount_result)
-    # print("------------------------------------------------------------------------------------------------")
-    #df1.columns = ['Total_Amount']
-    #print("-------------------------------------------------------------------------------------------------")
-    # Display the Pandas Dataframe
-    #print(df1.to_string(index=False))
-    #tabulate(df1, tablefmt = 'psql',showindex=False)
-    print("                                                                          Total_Amount : ",df1.iat[0,0])
-    print("------------------------------------------------------------------------------------------------------------")
+    
     mycursor.close()  # closing the cursor object connection
     conn.close()
     print("Successfully closed the connection")
@@ -209,13 +191,13 @@ def get_existing_acc_details():
     else:
         conn.connect()
     mycursor = conn.cursor()
-    query = "select FIRST_NAME, MIDDLE_NAME, LAST_NAME, FULL_STREET_ADDRESS,CUST_CITY,CUST_STATE,CUST_PHONE, CUST_EMAIL from creditcard_capstone.cdw_sapp_customer where CREDIT_CARD_NO = " + customer_credit_card_no + " AND substring(SSN,6,4) = " + last_four_digit_SSN + ""
-    # print(query)
+    query = "select FIRST_NAME, MIDDLE_NAME, LAST_NAME, CONCAT(FULL_STREET_ADDRESS,', ',CUST_CITY,', ',CUST_STATE),CUST_PHONE, CUST_EMAIL from creditcard_capstone.cdw_sapp_customer where CREDIT_CARD_NO = " + customer_credit_card_no + " AND substring(SSN,6,4) = " + last_four_digit_SSN + ""
+    print(query)
     mycursor.execute(query)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    df.columns = ['FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'FULL_STREET_ADDRESS','CUST_CITY','CUST_STATE','CUST_PHONE', 'CUST_EMAIL']
+    df.columns = ['FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'ADDRESS','CUST_PHONE', 'CUST_EMAIL']
     # Display the Pandas Dataframe
     print(tabulate(df, headers = 'keys', tablefmt = 'psql',showindex=False))
     # print(result)
@@ -226,75 +208,87 @@ def get_existing_acc_details():
 
 def modify_existing_acc_details():
     updated_first_name = None
+    updated_middle_name = None
     updated_last_name = None
     updated_email = None
     updated_phone = None
+    is_update_required = False
     customer_credit_card_no, last_four_digit_SSN = input(
         "Enter Customer Credit Card NO & last_four_digit_SSN :").split()
     try:
         update_column = int(input(
-            "What customer detail you want to update:(1.FIRST_NAME 2.LAST_NAME 3.CUST_EMAIL 4.CUST_PHONE 5.Done)?"))
-        while update_column != 5:
+            "What customer detail you want to update:(1.FIRST_NAME 2.MIDDLE_NAME,3.LAST_NAME 4.CUST_EMAIL 5.CUST_PHONE 6.Done)?"))
+        while update_column != 6:
             if update_column == 1:
+                is_update_required = True
                 updated_first_name = input("Enter updated value for the First Name:")
                 print(updated_first_name)
             elif update_column == 2:
+                is_update_required = True
+                updated_middle_name = input("Enter updated value for the Middle Name:")
+                print(updated_middle_name)
+            elif update_column == 3:
+                is_update_required = True
                 updated_last_name = input("Enter updated value for the Last Name:")
                 print(updated_last_name)
-            elif update_column == 3:
+            elif update_column == 4:
+                is_update_required = True
                 updated_email = input("Enter updated value for the email:")
                 print(updated_email)
-            elif update_column == 4:
+            elif update_column == 5:
+                is_update_required = True
                 updated_phone = input("Enter updated value for the phone number:")
                 print(updated_phone)
-            elif update_column == 5:
-                print("Done. Got all the new values to update for the existing customer")
             else:
                 print("Invalid Input")
             update_column = int(input(
-                "What customer detail you want to update:(1.FIRST_NAME 2.LAST_NAME 3.CUST_PHONE 4.CUST_EMAIL 5.Done)?"))
+                "Enter correct number to update the existing customer details:(1.FIRST_NAME 2.MIDDLE_NAME,3.LAST_NAME 4.CUST_PHONE 5.CUST_EMAIL 6.Done)?"))
+        if update_column == 6 and is_update_required:
+            print("Got all the new values to update for the existing customer")
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
-        else:
-            conn.connect()
-        mycursor = conn.cursor()
-        mySql_update_query = """UPDATE creditcard_capstone.cdw_sapp_customer SET """
-        count = 0
-        parameters = ()  # parameter tuple initialized
-        if updated_first_name:
-            mySql_update_query = mySql_update_query + """ FIRST_NAME = %s """
-            count = count + 1
-            parameters = parameters + (updated_first_name,)
-        if updated_last_name:
-            if count > 0: mySql_update_query = mySql_update_query + ""","""
-            mySql_update_query = mySql_update_query + """ LAST_NAME = %s """
-            count = count + 1
-            parameters = parameters + (updated_last_name,)
-        if updated_email:
-            if count > 0: mySql_update_query = mySql_update_query + ""","""
-            mySql_update_query = mySql_update_query + """ CUST_EMAIL = %s """
-            count = count + 1
-            parameters = parameters + (updated_email,)
-        if updated_phone:
-            if count > 0: mySql_update_query = mySql_update_query + ""","""
-            mySql_update_query = mySql_update_query + """ CUST_PHONE = %s """
-            count = count + 1
-            parameters = parameters + (updated_phone,)
-        mySql_update_query = mySql_update_query + """, LAST_UPDATED=concat(date_format(now(),'%Y-%m-%dT%T.000'),time_format(timediff(now(),utc_timestamp),'%H:%i')) WHERE CREDIT_CARD_NO = %s and substring(SSN,6,4)=%s """
-        parameters = parameters + (customer_credit_card_no, last_four_digit_SSN,)
-        print(mySql_update_query)
-        print(parameters)
-        mycursor.execute(mySql_update_query, parameters)
-        conn.commit()
-        print("Record updated successfully into cdw_sapp_customer table")
-    except Error as error:
-        print("Failed to insert into MySQL table {}".format(error))
-    finally:
-        if conn.is_connected():
+            if not conn.is_connected():
+                conn.connect()
+            mycursor = conn.cursor()
+            mySql_update_query = """UPDATE creditcard_capstone.cdw_sapp_customer SET """
+            count = 0
+            parameters = ()  # parameter tuple initialized
+            if updated_first_name:
+                mySql_update_query = mySql_update_query + """ FIRST_NAME = %s """
+                count = count + 1
+                parameters = parameters + (updated_first_name,)
+            if updated_middle_name:
+                mySql_update_query = mySql_update_query + """ MIDDLE_NAME = %s """
+                count = count + 1
+                parameters = parameters + (updated_middle_name,)
+            if updated_last_name:
+                if count > 0: mySql_update_query = mySql_update_query + ""","""
+                mySql_update_query = mySql_update_query + """ LAST_NAME = %s """
+                count = count + 1
+                parameters = parameters + (updated_last_name,)
+            if updated_email:
+                if count > 0: mySql_update_query = mySql_update_query + ""","""
+                mySql_update_query = mySql_update_query + """ CUST_EMAIL = %s """
+                count = count + 1
+                parameters = parameters + (updated_email,)
+            if updated_phone:
+                if count > 0: mySql_update_query = mySql_update_query + ""","""
+                mySql_update_query = mySql_update_query + """ CUST_PHONE = %s """
+                count = count + 1
+                parameters = parameters + (updated_phone,)
+            mySql_update_query = mySql_update_query + """, LAST_UPDATED=concat(date_format(now(),'%Y-%m-%dT%T.000'),time_format(timediff(now(),utc_timestamp),'%H:%i')) WHERE CREDIT_CARD_NO = %s and substring(SSN,6,4)=%s """
+            parameters = parameters + (customer_credit_card_no, last_four_digit_SSN,)
+            #print(mySql_update_query)
+            #print(parameters)
+            mycursor.execute(mySql_update_query, parameters)
+            conn.commit()
             mycursor.close()
             conn.close()
-            print("MySQL connection is closed")
+            print("Record updated successfully into cdw_sapp_customer table")
+        elif update_column == 6 and is_update_required == False:
+            print("Currently Not updating the existing customer account details")
+    except Error as error:
+        print("Failed to insert into MySQL table {}".format(error))
+    
 
 
 # method to generate a monthly bill for a credit card number for a given month and year
@@ -317,18 +311,33 @@ def get_monthly_bill():
     else:
         conn.connect()
     mycursor = conn.cursor()
-    query = """select CREDIT_CARD_NO, TIMEID, CUST_SSN, BRANCH_CODE, TRANSACTION_TYPE, TRANSACTION_VALUE, TRANSACTION_ID from cdw_sapp_credit_card where CREDIT_CARD_NO = %s AND month(TIMEID) = %s AND year(TIMEID) = %s """
+    query = """select TRANSACTION_ID,CREDIT_CARD_NO, TIMEID as TRANSACTION_DATE, TRANSACTION_TYPE, TRANSACTION_VALUE from cdw_sapp_credit_card where CREDIT_CARD_NO = %s AND month(TIMEID) = %s AND year(TIMEID) = %s """
     # print(query)
     values = (credit_card_no, month, year)
     mycursor.execute(query, values)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
     df = pd.DataFrame(result)
-    df.columns = ['CREDIT_CARD_NO', "TIMEID", 'SSN', 'BRANCH_CODE', 'TRANSACTION_TYPE', 'TRANSACTION_VALUE',
-                  'TRANSACTION_ID']
+    df.columns = ['TRANSACTION_ID','CREDIT_CARD_NO', "TRANSACTION_DATE", 'TRANSACTION_TYPE', 'TRANSACTION_VALUE']
     # Display the Pandas Dataframe
-    print(df)
-    # print(result)
+    #print(df)
+    print("----------------------------------------------------------------------------------------------------------")
+
+    print("Credit Card Statement  for " + calendar.month_name[month]+ " "+str(year))
+
+    print(tabulate(df, headers = 'keys', tablefmt = 'psql',showindex=False))
+    total_amount_query = """select SUM(TRANSACTION_VALUE) from cdw_sapp_credit_card where CREDIT_CARD_NO=%s AND month(TIMEID)=%s AND year(TIMEID)=%s """
+    #print(total_amount_query)
+    mycursor.execute(total_amount_query,values)
+    total_amount_result = mycursor.fetchall();  # fetch all the values from the mysql database
+    # Convert to Pandas Dataframe
+    df1 = pd.DataFrame(total_amount_result)
+    df1.columns = ['Total_Amount']
+    # Display the Pandas Dataframe
+    #print(df1.to_string(index=False))
+    #print("Total_Amount : ",tabulate(df1.iat[0,0], tablefmt = 'psql',showindex=False))
+    print("                                                                  Total_Amount   :              ",df1.iat[0,0])
+    print("------------------------------------------------------------------------------------------------------------")
     mycursor.close()  # closing the cursor object connection
     conn.close()
     print("Successfully closed the connection")
@@ -338,16 +347,17 @@ def get_monthly_bill():
 def get_transactions_within_range():
     # calling the method to display the transactions made by a customer between two dates.
     print("Enter the start & End date to pull the transaction made by the customer for specific date range:")
-    start_date = int(input("Enter Start Date:"))
-    end_date = int(input("Enter End Date:"))
-    print("Extracting transaction data from {} to {}".format(start_date, end_date))
+    start_date = int(input("Enter Start Date(YYYYMMDD):"))
+    end_date = int(input("Enter End Date(YYYYMMDD):"))
+    print("Transaction Details for the time period {} to {}".format(start_date, end_date))
+
     # checking the connection established successfully
     if conn.is_connected():
         print('Successfully Connected to MySQL database')
     else:
         conn.connect()
     mycursor = conn.cursor()
-    query = """select distinct TRANSACTION_ID,TRANSACTION_TYPE,TRANSACTION_VALUE, CREDIT_CARD_NO,TIMEID from cdw_sapp_credit_card where TIMEID BETWEEN '%s' AND '%s' """
+    query = """select distinct TRANSACTION_ID,TRANSACTION_TYPE,TRANSACTION_VALUE, CREDIT_CARD_NO,TIMEID from cdw_sapp_credit_card where TIMEID BETWEEN '%s' AND '%s' ORDER BY TIMEID desc """
     # print(query)
     values = (start_date, end_date)
     mycursor.execute(query, values)
@@ -356,7 +366,7 @@ def get_transactions_within_range():
     df = pd.DataFrame(result)
     df.columns = ['TRANSACTION_ID', 'TRANSACTION_TYPE', 'TRANSACTION_VALUE', 'CREDIT_CARD_NO', "TIMEID"]
     # Display the Pandas Dataframe
-    print(df)
+    print(tabulate(df,showindex=False,tablefmt='psql'))
     # print(result)
     mycursor.close()  # closing the cursor object connection
     conn.close()
