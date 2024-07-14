@@ -18,13 +18,13 @@ def plot_highest_transaction_count():
         result = mycursor.fetchall();  # fetch all the values from the mysql database
         # Convert to Pandas Dataframe
         df = pd.DataFrame(result, columns=['TRANSACTION_TYPE', 'TRANSACTION_COUNT'])
-        print(df)
+        #print(df)
         # Defining the plotsize
         plt.figure(figsize=(8, 6))
 
         # Defining the x-axis, the y-axis and the data
         # from where the values are to be taken
-        palette = ["#000000", "#171819", "#2f3132", "#464a4b", "#5e6264", "#767b7d", "#8d9496"]
+        palette = ['#1c5c8c','#206aa2','#2578b7','#2986cc','#3892d7','#4d9edb','#62aadf']
         plots = sns.barplot(x=df['TRANSACTION_TYPE'], y=df['TRANSACTION_COUNT'], palette=palette,
                             hue=df['TRANSACTION_TYPE'], data=df)
         for bar in plots.patches:
@@ -39,7 +39,7 @@ def plot_highest_transaction_count():
         plt.xlabel("TRANSACTION_TYPE", size=13)
 
         # Setting the y-axis label and its size
-        plt.ylabel("TRANSACTION_TYPE", size=13)
+        plt.ylabel("NO OF TRANSACTIONS", size=13)
 
         # Finally plotting the graph
         plt.show()
@@ -81,10 +81,10 @@ def top10_States_with_high_customers():
         # Title
         plt.title(" Top 10 states with highest number of customers")
         # Setting the x-axis label and its size
-        plt.xlabel("TRANSACTION_TYPE", size=13)
+        plt.xlabel("STATES", size=13)
 
         # Setting the y-axis label and its size
-        plt.ylabel("TRANSACTION_TYPE", size=13)
+        plt.ylabel("NO OF CUSTOMERS", size=13)
 
         # Finally plotting the graph
         plt.show()
@@ -114,8 +114,7 @@ def top10_customers_with_high_transaction_amount():
         print(df)
         # Defining the plotsize
         plt.figure(figsize=(8, 6))
-        palette = ["#fee090", "#fdae61", "#4575b4", "#313695", "#4682B4", "#abd9e9", "#d73027", "#a50026", "#4575b4",
-                   "#abd9e9"]
+        palette = ['#333873','#474b81','#5b5f8f','#70739d','#8487ab','#999bb9','#adafc7','#c1c3d5','#d6d7e3','#eaebf1']
         # Defining the x-axis, the y-axis and the data
         # from where the values are to be taken
         plots = sns.barplot(x=df['CUSTOMER_NAME'], y=df['TRANSACTION_SUM'], palette=palette, hue=df['CUSTOMER_NAME'],
@@ -132,7 +131,7 @@ def top10_customers_with_high_transaction_amount():
         plt.xlabel("CUSTOMER_NAME", size=13)
 
         # Setting the y-axis label and its size
-        plt.ylabel("TRANSACTION_SUM", size=13)
+        plt.ylabel("TRANSACTION_AMOUNT(IN DOLLARS)", size=13)
 
         # Finally plotting the graph
         plt.show()
@@ -216,7 +215,7 @@ def plot_percentage_of_rejections_for_married_male_applicants():
         palette_color = sns.color_palette('bright')
 
         # plotting data on chart 
-        plt.pie(x, labels=keys, colors=palette_color, startangle=90)
+        plt.pie(x, labels=keys, autopct='%.0f%%',colors=palette_color, startangle=90)
 
         plt.legend(loc='upper right')
 

@@ -53,8 +53,8 @@ select distinct substring(timeid,5,1) from cdw_sapp_credit_card;
  select * from creditcard_capstone.cdw_sapp_customer WHERE 
  CREDIT_CARD_NO = 4210653310356919 and FIRST_NAME='Wilfred_test' and substring(SSN,6,4)='4431';
  
- select * from creditcard_capstone.cdw_sapp_customer WHERE 
- CREDIT_CARD_NO = 4210653360481256;
+ select CONCAT(FULL_STREET_ADDRESS,',',CUST_CITY,',',CUST_STATE) as CUST_ADDRESS from creditcard_capstone.cdw_sapp_customer WHERE 
+ CREDIT_CARD_NO = 4210653365537472;
  
  select distinct(CUST_ZIP) from cdw_sapp_customer order by CUST_ZIP ;
  
@@ -111,4 +111,12 @@ order by transaction_count desc;
 
 select count(transaction_type) from cdw_sapp_credit_card where transaction_type ='Gas';
 
-select * from cdw_sapp_loan_application;
+select * from  cdw_sapp_credit_card where CREDIT_CARD_NO = '4210653310356919';
+
+select * from cdw_sapp_customer where CREDIT_CARD_NO = '4210653310356919';
+
+SELECT sum(cr.TRANSACTION_VALUE) as Total_AMount
+             FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer 
+             cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE cu.CUST_ZIP = '79930' AND month(cr.TIMEID) = '5' 
+             AND year(cr.TIMEID) = '2018' 
+             ;
