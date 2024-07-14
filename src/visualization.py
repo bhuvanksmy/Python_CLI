@@ -215,7 +215,7 @@ def plot_percentage_of_rejections_for_married_male_applicants():
         palette_color = sns.color_palette('bright')
 
         # plotting data on chart 
-        plt.pie(x, labels=keys, autopct='%.0f%%',colors=palette_color, startangle=90)
+        plt.pie(x, labels=keys, colors=palette_color, startangle=90)
 
         plt.legend(loc='upper right')
 
