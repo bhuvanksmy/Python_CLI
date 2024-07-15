@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import mysql.connector as dbconnect
 import pandas as pd
 import seaborn as sns
+import calendar
 
 
 # req 3.1 - Calculate and plot which transaction type has the highest transaction count.
@@ -10,8 +11,8 @@ def plot_highest_transaction_count():
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
+        #if conn.is_connected():
+            #print('Successfully Connected to MySQL database')
         mycursor = conn.cursor()
         query = """ select transaction_type, count(transaction_type) as transaction_count from cdw_sapp_credit_card group by transaction_type ORDER BY transaction_count desc"""
         mycursor.execute(query)
@@ -45,7 +46,7 @@ def plot_highest_transaction_count():
         plt.show()
         mycursor.close()  # closing the cursor object connection
         conn.close()
-        print("Successfully closed the connection")
+        #print("Successfully closed the connection")
     except Exception as e:
         conn.close()
         print(str(e))
@@ -57,8 +58,8 @@ def top10_States_with_high_customers():
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
+        #if conn.is_connected():
+            #print('Successfully Connected to MySQL database')
         mycursor = conn.cursor()
         query = """select distinct CUST_STATE as STATE,count(CUST_STATE) as CUSTOMER_COUNT from cdw_sapp_customer group by CUST_STATE order by count(CUST_STATE) desc limit 10"""
         mycursor.execute(query)
@@ -71,7 +72,8 @@ def top10_States_with_high_customers():
 
         # Defining the x-axis, the y-axis and the data
         # from where the values are to be taken
-        plots = sns.barplot(x=df['STATE'], y=df['CUSTOMER_COUNT'], data=df)
+        palatte = ("Paired")
+        plots = sns.barplot(x=df['STATE'], y=df['CUSTOMER_COUNT'], data=df,palette=palatte,hue=df['STATE'])
         for bar in plots.patches:
             plots.annotate(format(bar.get_height(), '.0f'),
                            (bar.get_x() + bar.get_width() / 2,
@@ -85,12 +87,12 @@ def top10_States_with_high_customers():
 
         # Setting the y-axis label and its size
         plt.ylabel("NO OF CUSTOMERS", size=13)
-
+        #plt.legend(loc='upper right')
         # Finally plotting the graph
         plt.show()
         mycursor.close()  # closing the cursor object connection
         conn.close()
-        print("Successfully closed the connection")
+        #print("Successfully closed the connection")
     except Exception as e:
         conn.close()
         print(str(e))
@@ -103,8 +105,8 @@ def top10_customers_with_high_transaction_amount():
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
+        #if conn.is_connected():
+            #print('Successfully Connected to MySQL database')
         mycursor = conn.cursor()
         query = """select distinct cus.FIRST_NAME as CUSTOMER_NAME,cc.CREDIT_CARD_NO,round(sum(TRANSACTION_VALUE),2) as TRANSACTION_SUM from cdw_sapp_credit_card as cc INNER JOIN cdw_sapp_customer as cus on cc.CREDIT_CARD_NO = cus.CREDIT_CARD_NO AND cc.CUST_SSN = cus.SSN group by cc.CREDIT_CARD_NO,cus.FIRST_NAME order by sum(TRANSACTION_VALUE) desc LIMIT 10"""
         mycursor.execute(query)
@@ -114,10 +116,11 @@ def top10_customers_with_high_transaction_amount():
         print(df)
         # Defining the plotsize
         plt.figure(figsize=(8, 6))
-        palette = ['#333873','#474b81','#5b5f8f','#70739d','#8487ab','#999bb9','#adafc7','#c1c3d5','#d6d7e3','#eaebf1']
+        #palette = ['#02090e','#05121c','#081b2a','#0b2438','#0e2e46','#103754','#134062','#164970','#19527e','#1c5c8c']
+        palatte="gist_earth"
         # Defining the x-axis, the y-axis and the data
         # from where the values are to be taken
-        plots = sns.barplot(x=df['CUSTOMER_NAME'], y=df['TRANSACTION_SUM'], palette=palette, hue=df['CUSTOMER_NAME'],
+        plots = sns.barplot(x=df['CUSTOMER_NAME'], y=df['TRANSACTION_SUM'], palette=palatte, hue=df['CUSTOMER_NAME'],
                             data=df)
         for bar in plots.patches:
             plots.annotate(format(bar.get_height(), '.0f'),
@@ -137,7 +140,7 @@ def top10_customers_with_high_transaction_amount():
         plt.show()
         mycursor.close()  # closing the cursor object connection
         conn.close()
-        print("Successfully closed the connection")
+        #print("Successfully closed the connection")
     except Exception as e:
         conn.close()
         print(str(e))
@@ -150,8 +153,8 @@ def plot_percentage_for_applications_approved_for_selfemployed():
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
+        #if conn.is_connected():
+            #print('Successfully Connected to MySQL database')
         mycursor = conn.cursor()
         query = """select count(Application_Status) as count from cdw_sapp_loan_application where Self_Employed = 'Yes' group by Application_Status"""
         mycursor.execute(query)
@@ -166,10 +169,11 @@ def plot_percentage_for_applications_approved_for_selfemployed():
         plt.figure(figsize=(8, 6))
 
         # labels for data, replace with your own
-        keys = ['YES', 'NO']
+        keys = ['APPROVED', 'NOT APPROVED']
 
         # define Seaborn color palette to use 
-        palette_color = sns.color_palette('bright')
+        palette_color = sns.color_palette('terrain')
+        #print(sns.color_palette("dark").as_hex())
 
         # plotting data on chart 
         plt.pie(x, labels=keys, colors=palette_color, autopct='%.0f%%', startangle=90)
@@ -193,8 +197,8 @@ def plot_percentage_of_rejections_for_married_male_applicants():
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
+        #if conn.is_connected():
+            #print('Successfully Connected to MySQL database')
         mycursor = conn.cursor()
         query = """select count(*) from cdw_sapp_loan_application where Gender = 'Male' AND Married = 'Yes' group by Application_Status"""
         mycursor.execute(query)
@@ -212,7 +216,7 @@ def plot_percentage_of_rejections_for_married_male_applicants():
         keys = ['Rejected', 'Approved']
 
         # define Seaborn color palette to use 
-        palette_color = sns.color_palette('bright')
+        palette_color = sns.color_palette('icefire')
 
         # plotting data on chart 
         plt.pie(x, labels=keys, autopct='%.0f%%',colors=palette_color, startangle=90)
@@ -220,7 +224,7 @@ def plot_percentage_of_rejections_for_married_male_applicants():
         plt.legend(loc='upper right')
 
         # Add title to the chart
-        plt.title('Percentage of applications approved for self-employed applicants')
+        plt.title('Percentage of applications rejected for married male applicants')
 
         # displaying chart 
         plt.show()
@@ -237,10 +241,10 @@ def top3_months_with_high_transactional_data():
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
+        #if conn.is_connected():
+            #print('Successfully Connected to MySQL database')
         mycursor = conn.cursor()
-        query = """select month(TIMEID),round(sum(TRANSACTION_VALUE)) from cdw_sapp_credit_card group by month(TIMEID) order by round(sum(TRANSACTION_VALUE)) desc limit 3"""
+        query = """select monthname(TIMEID),round(COUNT(TRANSACTION_VALUE)) from cdw_sapp_credit_card group by monthname(TIMEID) order by round(count(TRANSACTION_VALUE)) desc limit 3"""
         mycursor.execute(query)
         result = mycursor.fetchall();  # fetch all the values from the mysql database
         # Convert to Pandas Dataframe
@@ -251,8 +255,8 @@ def top3_months_with_high_transactional_data():
 
         # Defining the x-axis, the y-axis and the data
         # from where the values are to be taken
-        palette = ["red", "blue", "green"]
-        plots = sns.barplot(x=df['MONTH'], y=df['TRANSACTION_VALUE'], data=df, palette=palette, width=0.5)
+        palette = "winter"
+        plots = sns.barplot(x=df['MONTH'], y=df['TRANSACTION_VALUE'], data=df, palette=palette, width=0.5,hue=df['MONTH'])
 
         for bar in plots.patches:
             plots.annotate(format(bar.get_height(), '.0f'),
@@ -272,7 +276,7 @@ def top3_months_with_high_transactional_data():
         plt.show()
         mycursor.close()  # closing the cursor object connection
         conn.close()
-        print("Successfully closed the connection")
+        #print("Successfully closed the connection")
     except Exception as e:
         conn.close()
         print(str(e))
@@ -285,8 +289,8 @@ def get_branch_with_highest_dollarvalue_healthcare_transactions():
         conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user='root', password='password',
                                  port='3306')
         # checking the connection established successfully
-        if conn.is_connected():
-            print('Successfully Connected to MySQL database')
+        #if conn.is_connected():
+            #print('Successfully Connected to MySQL database')
         mycursor = conn.cursor()
         query = """ select distinct br.BRANCH_CITY,cr.TRANSACTIONAL_VALUE from cdw_sapp_branch br inner join (select BRANCH_CODE,round(sum(TRANSACTION_VALUE)) as TRANSACTIONAL_VALUE from cdw_sapp_credit_card where TRANSACTION_TYPE = 'Healthcare' group by BRANCH_CODE order by round(sum(TRANSACTION_VALUE)) desc ) cr ON  br.BRANCH_CODE = cr.BRANCH_CODE order by cr.TRANSACTIONAL_VALUE desc limit 10"""
         mycursor.execute(query)
@@ -299,8 +303,8 @@ def get_branch_with_highest_dollarvalue_healthcare_transactions():
 
         # Defining the x-axis, the y-axis and the data
         # from where the values are to be taken
-        # palette = ["red","blue","green"]
-        plots = sns.barplot(x=df['BRANCH_CITY'], y=df['TRANSACTION_VALUE'], data=df, width=0.5)
+        palette = "ocean"
+        plots = sns.barplot(x=df['BRANCH_CITY'], y=df['TRANSACTION_VALUE'], data=df, width=0.5,palette=palette,hue=df['BRANCH_CITY'])
 
         for bar in plots.patches:
             plots.annotate(format(bar.get_height(), '.0f'),
@@ -320,7 +324,7 @@ def get_branch_with_highest_dollarvalue_healthcare_transactions():
         plt.show()
         mycursor.close()  # closing the cursor object connection
         conn.close()
-        print("Successfully closed the connection")
+        #print("Successfully closed the connection")
     except Exception as e:
         conn.close()
         print(str(e))

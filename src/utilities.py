@@ -192,7 +192,7 @@ def get_existing_acc_details():
         conn.connect()
     mycursor = conn.cursor()
     query = "select FIRST_NAME, MIDDLE_NAME, LAST_NAME, CONCAT(FULL_STREET_ADDRESS,', ',CUST_CITY,', ',CUST_STATE),CUST_PHONE, CUST_EMAIL from creditcard_capstone.cdw_sapp_customer where CREDIT_CARD_NO = " + customer_credit_card_no + " AND substring(SSN,6,4) = " + last_four_digit_SSN + ""
-    print(query)
+    #print(query)
     mycursor.execute(query)
     result = mycursor.fetchall();  # fetch all the values from the mysql database
     # Convert to Pandas Dataframe
@@ -242,7 +242,7 @@ def modify_existing_acc_details():
             else:
                 print("Invalid Input")
             update_column = int(input(
-                "Enter correct number to update the existing customer details:(1.FIRST_NAME 2.MIDDLE_NAME,3.LAST_NAME 4.CUST_PHONE 5.CUST_EMAIL 6.Done)?"))
+                "What customer detail you want to update:(1.FIRST_NAME 2.MIDDLE_NAME,3.LAST_NAME 4.CUST_PHONE 5.CUST_EMAIL 6.Done)?"))
         if update_column == 6 and is_update_required:
             print("Got all the new values to update for the existing customer")
         # checking the connection established successfully
