@@ -111,12 +111,52 @@ order by transaction_count desc;
 
 select count(transaction_type) from cdw_sapp_credit_card where transaction_type ='Gas';
 
-select * from  cdw_sapp_credit_card where CREDIT_CARD_NO = '4210653310356919';
-
-select * from cdw_sapp_customer where CREDIT_CARD_NO = '4210653310356919';
+select * from  cdw_sapp_credit_card where CREDIT_CARD_NO = '4210653310061055' and month(TIMEID) = 05;
+use creditcard_capstone;
+select * from cdw_sapp_customer 
+where CREDIT_CARD_NO = '4210653310356919';
 
 SELECT sum(cr.TRANSACTION_VALUE) as Total_AMount
              FROM cdw_sapp_credit_card AS cr INNER JOIN cdw_sapp_customer 
              cu ON cr.CREDIT_CARD_NO = cu.CREDIT_CARD_NO AND cr.CUST_SSN = cu.SSN WHERE cu.CUST_ZIP = '79930' AND month(cr.TIMEID) = '5' 
-             AND year(cr.TIMEID) = '2018' 
-             ;
+             AND year(cr.TIMEID) = '2018' ;
+select FIRST_NAME, MIDDLE_NAME, LAST_NAME, CONCAT(FULL_STREET_ADDRESS,', ',CUST_CITY,', ',CUST_STATE),CUST_PHONE, CUST_EMAIL 
+from creditcard_capstone.cdw_sapp_customer where CREDIT_CARD_NO = '4210653310356919' 
+AND substring(SSN,6,4) = '4431';
+
+select sum(TRANSACTION_VALUE) from 
+cdw_sapp_credit_card where CREDIT_CARD_NO = 4210653310356919 AND month(TIMEID) = 5 AND year(TIMEID) = 2018;
+
+select SUM(TRANSACTION_VALUE) from cdw_sapp_credit_card where CREDIT_CARD_NO = 4210653310356919 AND month(TIMEID) = 5 AND year(TIMEID) = 2018 ;
+
+select SUM(TRANSACTION_VALUE) from cdw_sapp_credit_card where CREDIT_CARD_NO = %s AND month(TIMEID) = %s AND year(TIMEID) = %s;
+
+select * from cdw_sapp_branch;
+select ROUND(SUM(TRANSACTION_VALUE),2) from cdw_sapp_credit_card where CREDIT_CARD_NO=4210653310356919 AND month(TIMEID)=1 AND year(TIMEID)=2018;
+
+select SUM(TRANSACTION_VALUE) from cdw_sapp_credit_card where CREDIT_CARD_NO=4210653310356919 AND month(TIMEID)=1 AND year(TIMEID)=2018;
+SELECT CONVERT_TZ(FROM_UNIXTIME(now(), @@session.time_zone, '+00:00')) FROM dual;
+SELECT TIMEID,from_unixtime(TIMEID,'%Y-%m-%dT%h:%i:%s %x') from cdw_sapp_credit_card; -- 2018-04-21T12:49:02.000-04:00
+
+SELECT CONCAT(DATE_FORMAT( now() ,'%Y-%m-%dT%T.%f'), TIME_FORMAT( TIMEDIFF(NOW(), UTC_TIMESTAMP), '%H:%i') ) AS date_formatted;
+
+SELECT CONCAT(DATE_FORMAT( now() ,'%Y-%m-%dT%T.000'), TIME_FORMAT( TIMEDIFF(NOW(), UTC_TIMESTAMP), '%H:%i') ) AS date_formatted;
+
+select distinct TRANSACTION_ID,TRANSACTION_TYPE,TRANSACTION_VALUE, CREDIT_CARD_NO,TIMEID from cdw_sapp_credit_card where TIMEID BETWEEN '20180201' AND '20180230'
+ORDER BY TIMEID desc; 
+
+select count(1) from cdw_sapp_credit_card  where TIMEID BETWEEN '20181201' AND '20181230';
+select * from cdw_sapp_loan_application limit 1;
+select (count(*)/(select count(Application_Status) as count from cdw_sapp_loan_application where Self_Employed = 'Yes' group by Application_Status))
+*100 from cdw_sapp_credit_card;
+
+select count(1) as count from cdw_sapp_loan_application where Self_Employed = 'Yes';
+select count(1) as count from cdw_sapp_loan_application where Self_Employed = 'Yes' and Application_Status='Y';
+
+select count(Application_Status) as count from cdw_sapp_loan_application where Self_Employed = 'Yes' group by Application_Status;
+
+select count(*) from cdw_sapp_loan_application where Gender = 'Male' AND Married = 'Yes' group by Application_Status;
+
+
+
+    

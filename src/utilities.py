@@ -10,6 +10,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import make_date, expr, date_format
 from tabulate import tabulate
 import calendar
+import pwinput
 
 # pd.set_option('display.max_columns', None)
 # pd.set_option('max_colwidth', None)
@@ -28,12 +29,21 @@ conn = dbconnect.connect(host='localhost', database='creditcard_capstone', user=
                          port='3306')
 
 # getting zipcode from the user
+def get_valid_credit_card_no():
+    credit_card_no = input("Enter a valid Credit Card No:")
+    while not isvalid_credit_card_no(credit_card_no):# calling the isvalid_credit_card_no() to validate customer credit card no 
+        # if invalid credit card no prompt user to re-enter correct credit card no
+        credit_card_no = input("Enter Credit Card No as 16 digit integer format:")
+        #print("given Credit Card No:", credit_card_no)
+    return credit_card_no
+
+# getting zipcode from the user
 def get_valid_zipcode():
     zipcode = input("Enter a valid zipcode:")
     while not isvalid_zipcode(zipcode):# calling the isvalid_zipcode() to validate zipcode 
         # if invalid zipcode prompt user to re-enter valid zipcode
         zipcode = input("Enter zipcode as 5 digit integer format:")
-        print("given Zipcode:", zipcode)
+        #print("given Zipcode:", zipcode)
     return zipcode
 
 # getting month from the user
@@ -52,6 +62,16 @@ def get_valid_year():
         year = input("Enter year in YYYY format:")
     return year
 
+# Validate entered CREDIT_CARD_NO is in correct format
+def isvalid_credit_card_no(z):
+    pattern = r"^\d{16}$"
+    match = re.match(pattern, z)
+    if match:
+        print("Valid Zipcode")
+        return True
+    else:
+        print("Please enter the valid 14-digit Credit Card No in format")
+        return False
 
 # Validate entered zipcode is in correct format
 def isvalid_zipcode(z):
@@ -61,7 +81,7 @@ def isvalid_zipcode(z):
         print("Valid Zipcode")
         return True
     else:
-        print("Please enter the valid 5-digit zip code format")
+        print("Please enter the valid 5-digit zip code in format")
         return False
     
 
@@ -183,8 +203,9 @@ def get_transaction():
 
 
 def get_existing_acc_details():
-    customer_credit_card_no, last_four_digit_SSN = input(
-        "Enter Customer Credit Card NO & last_four_digit_SSN :").split()
+    customer_credit_card_no = get_valid_credit_card_no() 
+    # encrypting last 4 digit SSN entered by user for privacy reasons
+    last_four_digit_SSN = pwinput.pwinput(prompt='Enter last four digit of SSN: ', mask='*')
     # checking the connection established successfully
     if conn.is_connected():
         print(' ')
@@ -213,8 +234,8 @@ def modify_existing_acc_details():
     updated_email = None
     updated_phone = None
     is_update_required = False
-    customer_credit_card_no, last_four_digit_SSN = input(
-        "Enter Customer Credit Card NO & last_four_digit_SSN :").split()
+    customer_credit_card_no = get_valid_credit_card_no() 
+    last_four_digit_SSN = pwinput.pwinput(prompt='Enter last four digit of SSN: ', mask='*')
     try:
         update_column = int(input(
             "What customer detail you want to update:(1.FIRST_NAME 2.MIDDLE_NAME,3.LAST_NAME 4.CUST_EMAIL 5.CUST_PHONE 6.Done)?"))
@@ -326,7 +347,7 @@ def get_monthly_bill():
     print("Credit Card Statement  for " + calendar.month_name[month]+ " "+str(year))
 
     print(tabulate(df, headers = 'keys', tablefmt = 'psql',showindex=False))
-    total_amount_query = """select SUM(TRANSACTION_VALUE) from cdw_sapp_credit_card where CREDIT_CARD_NO=%s AND month(TIMEID)=%s AND year(TIMEID)=%s """
+    total_amount_query = """select ROUND(SUM(TRANSACTION_VALUE),2) from cdw_sapp_credit_card where CREDIT_CARD_NO=%s AND month(TIMEID)=%s AND year(TIMEID)=%s """
     #print(total_amount_query)
     mycursor.execute(total_amount_query,values)
     total_amount_result = mycursor.fetchall();  # fetch all the values from the mysql database
