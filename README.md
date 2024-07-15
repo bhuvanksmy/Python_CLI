@@ -9,7 +9,7 @@ Software Requirements:
 - ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png) java 22.0.1 2024-04-16
 - ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) MySQL 8.0
 - ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png) Python 3.11.9 
-- ![#8fce00](https://via.placeholder.com/15/8fce00/8fce00.png) Python libraries are listed in requirement.txt created using the python command <b>Pip freeze >> requirement.txt</b>.
+- ![#8fce00](https://via.placeholder.com/15/8fce00/8fce00.png) Python libraries are listed in requirement.txt created using the python command <b>Pip freeze > requirement.txt</b>.
 Run requirement.txt document in terminal after installing Python 3.11.9 to install all the required python libraries.
 
 <b>Workflow Diagram of the Requirements.</b>
@@ -23,7 +23,7 @@ The workflow diagram below will help you visualize the flow and scope of this ca
 The Credit Card System database is an independent system developed for managing activities such as registering new customers and approving or canceling requests, etc., using the architecture.
 A credit card is issued to users to enact the payment system. It allows the cardholder to access financial services in exchange for the holder's promise to pay for them later. Below are three files that contain the customer’s transaction information and inventories in the credit card information.
 
-- CDW_SAPP_CUSTOMER.JSON: This file has the existing customer details includes(SSN, FIRST_NAME, MIDDLE_NAME, LAST_NAME, CREDIT_CARD_NO, FULL_STREET_ADDRESS, CUST_CITY, CUST_STATE, CUST_COUNTRY, CUST_ZIP, CUST_PHONE, CUST_EMAIL, LAST_UPDATED).The combination of (CREDIT_CARD_NO + SSN) composite key is the Primary key for customer table.- 
+- CDW_SAPP_CUSTOMER.JSON: This file has the existing customer details includes(SSN, FIRST_NAME, MIDDLE_NAME, LAST_NAME, CREDIT_CARD_NO, FULL_STREET_ADDRESS, CUST_CITY, CUST_STATE, CUST_COUNTRY, CUST_ZIP, CUST_PHONE, CUST_EMAIL, LAST_UPDATED).The combination of (CREDIT_CARD_NO + SSN) composite key is the Unique key for customer table. 
 - CDW_SAPP_CREDITCARD.JSON: This file contains all credit card transaction information includes CREDIT_CARD_NO, TIMEID, CUST_SSN, BRANCH_CODE, TRANSACTION_TYPE, TRANSACTION_VALUE, TRANSACTION_ID. TRANSACTION_ID is the primary key and combination of (CREDIT_CARD_NO + SSN) composite key is the foreign key with respect to customett table.
 - CDW_SAPP_BRANCH.JSON: Each branch’s information includes BRANCH_CODE, BRANCH_NAME, BRANCH_STREET, BRANCH_CITY, BRANCH_STATE, BRANCH_ZIP, BRANCH_PHONE, LAST_UPDATED and details are recorded in this file. BRANCH_CODE  
 
@@ -34,7 +34,7 @@ A credit card is issued to users to enact the payment system. It allows the card
 ### 1. Functional Requirements - Load Credit Card Database (SQL)
 
 ### 1.1 Functional Requirement
-    For “Credit Card System,” created a Python and PySpark SQL program to read/extract the following JSON files according to the specifications found in the mapping document. (https://docs.google.com/spreadsheets/d/1t8UxBrUV6dxx0pM1VIIGZpSf4IKbzjdJ/edit?gid=672931242#gid=672931242)]
+    For “Credit Card System,” created a Python and PySpark SQL program to read/extract the following JSON files according to the specifications found in the mapping document. https://docs.google.com/spreadsheets/d/1t8UxBrUV6dxx0pM1VIIGZpSf4IKbzjdJ/edit?gid=672931242#gid=672931242
 
 ### 1.2 Functional Requirement
 
