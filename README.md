@@ -6,7 +6,7 @@ This capstone project demonstrates my knowledge and abilities in Python, Python 
 
 # Software needed to run this application
 Software Requirements:
-1)java 22.0.1 2024-04-16
+- ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png) 1)java 22.0.1 2024-04-16
 2)MySQL 8.0
 3)Python 3.11.9 
 4)Python libraries are listed in requirement.txt created using the python command 
