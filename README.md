@@ -7,9 +7,9 @@ This capstone project demonstrates my knowledge and abilities in Python, Python 
 # Software needed to run this application
 Software Requirements:
 - ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png) 1)java 22.0.1 2024-04-16
-2)MySQL 8.0
-3)Python 3.11.9 
-4)Python libraries are listed in requirement.txt created using the python command 
+- ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) 2)MySQL 8.0
+- ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png) 3)Python 3.11.9 
+- ![#8fce00](https://via.placeholder.com/15/1589F0/1589F0.png) 4)Python libraries are listed in requirement.txt created using the python command 
 <b>Pip freeze >> requirement.txt</b>
 Run requirement.txt document in terminal after installing Python 3.11.9 to install all the required python libraries.
 
