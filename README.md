@@ -41,9 +41,9 @@ For “Credit Card System,” created a Python and PySpark SQL program to read/e
 Once PySpark reads data from JSON files, and then utilizes Python, PySpark, and Python modules to load data into RDBMS(SQL).
     
 Created a creditcard_capstoned database in SQL(MySQL), and created a Python and Pyspark Program to write the “Credit Card System Data” into following tables in RDBMS:
-        1)CDW_SAPP_BRANCH
-        2)CDW_SAPP_CREDIT_CARD
-        3)CDW_SAPP_CUSTOMER 
+- ![#f03c15](https://www.iconsdb.com/icons/download/color/f03c15/circle-16.png) CDW_SAPP_BRANCH
+- ![#c5f015](https://www.iconsdb.com/icons/download/color/c5f015/circle-16.png) CDW_SAPP_CREDIT_CARD
+- ![#1589F0](https://www.iconsdb.com/icons/download/color/1589F0/circle-16.png) CDW_SAPP_CUSTOMER       
 
 ### 2. Functional Requirements - Application Front-End
 ### 2.1 Transaction Details Module
