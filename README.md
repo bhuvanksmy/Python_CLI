@@ -34,13 +34,13 @@ A credit card is issued to users to enact the payment system. It allows the card
 ### 1. Functional Requirements - Load Credit Card Database (SQL)
 
 ### 1.1 Functional Requirement
-    For “Credit Card System,” created a Python and PySpark SQL program to read/extract the following JSON files according to the specifications found in the mapping document. https://docs.google.com/spreadsheets/d/1t8UxBrUV6dxx0pM1VIIGZpSf4IKbzjdJ/edit?gid=672931242#gid=672931242
+For “Credit Card System,” created a Python and PySpark SQL program to read/extract the following JSON files according to the specifications found in the mapping document. https://docs.google.com/spreadsheets/d/1t8UxBrUV6dxx0pM1VIIGZpSf4IKbzjdJ/edit?gid=672931242#gid=672931242
 
 ### 1.2 Functional Requirement
 
-    Once PySpark reads data from JSON files, and then utilizes Python, PySpark, and Python modules to load data into RDBMS(SQL).
+Once PySpark reads data from JSON files, and then utilizes Python, PySpark, and Python modules to load data into RDBMS(SQL).
     
-    Created a creditcard_capstoned database in SQL(MySQL), and created a Python and Pyspark Program to write the “Credit Card System Data” into following tables in RDBMS:
+Created a creditcard_capstoned database in SQL(MySQL), and created a Python and Pyspark Program to write the “Credit Card System Data” into following tables in RDBMS:
         1)CDW_SAPP_BRANCH
         2)CDW_SAPP_CREDIT_CARD
         3)CDW_SAPP_CUSTOMER 
