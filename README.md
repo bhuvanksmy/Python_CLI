@@ -91,11 +91,13 @@ Banks offer home loans across urban, semi-urban, and rural areas. Customers appl
 <b>API Endpoint:</b> https://raw.githubusercontent.com/platformps/LoanDataset/main/loan_data.json
 
 ### 4.1 Created a Python program to GET (consume) data from the above API endpoint for the loan application dataset.
-Used API request.get() method to read the API data(JSON Format) from API endpoint URL.
+Used API request.get() method to get response from API endpoint URL.
+
 ### 4.2 Calculate the status code of the above API endpoint. Hint: status code could be 200, 400, 404, 401.
-Successfully read the API data with the status code 200 and verified using response.statuscode.
+Response is successful with the status code 200 and verified using response.statuscode.
+
 ### 4.3 Once Python reads data from the API, utilize PySpark to load data into RDBMS (SQL). The table name should be CDW-SAPP_loan_application in the database. Note: Use the “creditcard_capstone” database.
-After python reads the API data from endpoit URL with the response code 200, ulilized PySpark and used the user defined function to load the API data into MySQL Database.
+Used spark.read.JSON() to read the API data from endpoit URL , ulilized PySpark write method to load the API data into creditcard_capstone Database.
 
 ### 5. Functional Requirements - Data Analysis and Visualization for LOAN Application
 
@@ -111,12 +113,12 @@ After python reads the API data from endpoit URL with the response code 200, uli
 <img src = "images/plot_percentage_of_rejections_for_married_male_applicants.jpeg"/>
 </div>
 
-### - 5.3 - Calculate and plot the top three months with the largest volume of transaction data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
+### 5.3 - Calculate and plot the top three months with the largest volume of transaction data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
 <div align = "center">
 <img src = "images/top3_months_with_high_transactional_data.jpeg"/>
 </div>
 
-### - 5.4 - Calculate and plot which branch processed the highest total dollar value of healthcare transactions. Use the ideal chart or graph to represent this data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
+### 5.4 - Calculate and plot which branch processed the highest total dollar value of healthcare transactions. Use the ideal chart or graph to represent this data. (hint: use `CDW_SAPP_CREDIT_CARD` table)
 <div align = "center">
 <img src = "images/get_branch_with_highest_dollarvalue_healthcare_transactions.jpeg"/>
 </div>
