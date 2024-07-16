@@ -20,7 +20,7 @@ The workflow diagram below will help you visualize the flow and scope of this ca
 </div>
 
 ### Credit Card Dataset Overview.
-The Credit Card System database is an independent system developed for managing activities such as registering new customers and approving or canceling requests, etc., using the architecture.
+The Credit Card System database is an independent system developed for creating new user, viewing and managing existing customers, handling transactions made by the customers and approving or canceling requests, etc., using the architecture.
 A credit card is issued to users to enact the payment system. It allows the cardholder to access financial services in exchange for the holder's promise to pay for them later. Below are three files that contain the customer’s transaction information and inventories in the credit card information.
 
 - CDW_SAPP_CUSTOMER.JSON: This file has the existing customer details includes(SSN, FIRST_NAME, MIDDLE_NAME, LAST_NAME, CREDIT_CARD_NO, FULL_STREET_ADDRESS, CUST_CITY, CUST_STATE, CUST_COUNTRY, CUST_ZIP, CUST_PHONE, CUST_EMAIL, LAST_UPDATED).The combination of (CREDIT_CARD_NO + SSN) composite key is the Unique key for customer table. 
