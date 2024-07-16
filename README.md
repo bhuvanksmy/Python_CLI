@@ -24,11 +24,11 @@ The workflow diagram below will help you visualize the flow and scope of this ca
 The Credit Card System database is an independent system developed for creating new user, viewing and managing existing customers, handling transactions made by the customers and approving or canceling requests, etc., using the architecture.
 A credit card is issued to users to enact the payment system. It allows the cardholder to access financial services in exchange for the holder's promise to pay for them later. Below are three files that contain the customer’s transaction information and inventories in the credit card information.
 
-<b>CDW_SAPP_CUSTOMER.JSON:</b> This file has the existing customer details includes(SSN, FIRST_NAME, MIDDLE_NAME, LAST_NAME, CREDIT_CARD_NO, FULL_STREET_ADDRESS, CUST_CITY, CUST_STATE, CUST_COUNTRY, CUST_ZIP, CUST_PHONE, CUST_EMAIL, LAST_UPDATED).The combination of (CREDIT_CARD_NO + SSN) composite key is the Unique key for customer table. 
+- <b>CDW_SAPP_CUSTOMER.JSON:</b> This file has the existing customer details includes(SSN, FIRST_NAME, MIDDLE_NAME, LAST_NAME, CREDIT_CARD_NO, FULL_STREET_ADDRESS, CUST_CITY, CUST_STATE, CUST_COUNTRY, CUST_ZIP, CUST_PHONE, CUST_EMAIL, LAST_UPDATED).The combination of (CREDIT_CARD_NO + SSN) composite key is the Unique key for customer table. 
 
-<b>CDW_SAPP_CREDITCARD.JSON:</b> This file contains all credit card transaction information includes CREDIT_CARD_NO, TIMEID, CUST_SSN, BRANCH_CODE, TRANSACTION_TYPE, TRANSACTION_VALUE, TRANSACTION_ID. TRANSACTION_ID is the primary key and combination of (CREDIT_CARD_NO + SSN) composite key is the Unique key with respect to customer table.
+- <b>CDW_SAPP_CREDITCARD.JSON:</b> This file contains all credit card transaction information includes CREDIT_CARD_NO, TIMEID, CUST_SSN, BRANCH_CODE, TRANSACTION_TYPE, TRANSACTION_VALUE, TRANSACTION_ID. TRANSACTION_ID is the primary key and combination of (CREDIT_CARD_NO + SSN) composite key is the Unique key with respect to customer table.
 
-<b>CDW_SAPP_BRANCH.JSON:</b> Each branch’s information includes BRANCH_CODE, BRANCH_NAME, BRANCH_STREET, BRANCH_CITY, BRANCH_STATE, BRANCH_ZIP, BRANCH_PHONE, LAST_UPDATED and details are recorded in this file. BRANCH_CODE  
+- <b>CDW_SAPP_BRANCH.JSON:</b> Each branch’s information includes BRANCH_CODE, BRANCH_NAME, BRANCH_STREET, BRANCH_CITY, BRANCH_STATE, BRANCH_ZIP, BRANCH_PHONE, LAST_UPDATED and details are recorded in this file. BRANCH_CODE  
 
 ### Business Requirements - ETL
 <div align = "center">
