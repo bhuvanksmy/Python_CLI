@@ -9,7 +9,7 @@ Software Requirements:
 - ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png) java 22.0.1 2024-04-16
 - ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) MySQL 8.0
 - ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png) Python 3.11.9
-- ![#58508d](https://via.placeholder.com/15/58508d/58508d.png) version 3.5.1
+- ![#58508d](https://via.placeholder.com/15/58508d/58508d.png) Spark version 3.5.1
 - ![#8fce00](https://via.placeholder.com/15/8fce00/8fce00.png) Python libraries are listed in requirement.txt created using the python command <b>Pip freeze > requirement.txt</b>.
 Run requirement.txt document in terminal after installing Python 3.11.9 to install all the required python libraries.
 
