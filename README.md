@@ -34,7 +34,7 @@ A credit card is issued to users to enact the payment system. It allows the card
 ### 1. Functional Requirements - Load Credit Card Database (SQL)
 
 ### 1.1 Functional Requirement
-For “Credit Card System,” created a Python and PySpark SQL program to read/extract the following JSON files according to the specifications found in the mapping document. https://docs.google.com/spreadsheets/d/1t8UxBrUV6dxx0pM1VIIGZpSf4IKbzjdJ/edit?gid=672931242#gid=672931242
+For “Credit Card System,” created a Python and PySpark SQL function to read/extract the following JSON files according to the specifications found in the mapping document. https://docs.google.com/spreadsheets/d/1t8UxBrUV6dxx0pM1VIIGZpSf4IKbzjdJ/edit?gid=672931242#gid=672931242
 
 ### 1.2 Functional Requirement
 
@@ -91,8 +91,11 @@ Banks offer home loans across urban, semi-urban, and rural areas. Customers appl
 <b>API Endpoint:</b> https://raw.githubusercontent.com/platformps/LoanDataset/main/loan_data.json
 
 ### 4.1 Created a Python program to GET (consume) data from the above API endpoint for the loan application dataset.
+Used API request.get() method to read the API data(JSON Format) from API endpoint URL.
 ### 4.2 Calculate the status code of the above API endpoint. Hint: status code could be 200, 400, 404, 401.
+Successfully read the API data with the status code 200 and verified using response.statuscode.
 ### 4.3 Once Python reads data from the API, utilize PySpark to load data into RDBMS (SQL). The table name should be CDW-SAPP_loan_application in the database. Note: Use the “creditcard_capstone” database.
+After python reads the API data from endpoit URL with the response code 200, ulilized PySpark and used the user defined function to load the API data into MySQL Database.
 
 ### 5. Functional Requirements - Data Analysis and Visualization for LOAN Application
 
