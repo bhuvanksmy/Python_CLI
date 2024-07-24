@@ -2,16 +2,18 @@
 https://docs.google.com/document/d/1QxkEehdLovK2f8PfqzJtfRn83PwHyqAs0r-1rPwaXV8/edit
 
 Data Engineering - Python CLI -Capstone Project 
-This capstone project demonstrates my knowledge and abilities in Python, Python advanced modules(Pandas, Numpy, Matplotlib,Seaborn), MySQL, Apache Spark (Spark Core, Spark SQL), CLI and created ETL process to extract data from Credit card Application dataset(dataset in JSON format) & Loan Application API.
+In this project, I developed a Python Command Line Interface (CLI) application leveraging multiple technologies including Python, MySQL, pandas, matplotlib, seaborn, and PySpark. The project showcases my ability to design and implement data processing pipelines, perform ETL (Extract, Transform, Load) operations, and visualize data. Additionally, I utilized GitHub for version control and Jenkins for CI/CD (Continuous Integration/Continuous Deployment) pipelines, highlighting my skills in automating testing and deployment processes.
 
-# Software needed to run this application
-Software Requirements:
-- ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png) java 22.0.1 2024-04-16
-- ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) MySQL 8.0
-- ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png) Python 3.11.9
-- ![#58508d](https://via.placeholder.com/15/58508d/58508d.png) Spark version 3.5.1
-- ![#8fce00](https://via.placeholder.com/15/8fce00/8fce00.png) Python libraries are listed in requirement.txt created using the python command <b>Pip freeze > requirement.txt</b>.
-Run requirement.txt document in terminal after installing Python 3.11.9 to install all the required python libraries.
+# Key Technologies and Tools
+- ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png)Python: Used for scripting, data processing, and building the CLI application.
+- ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png)MySQL: Utilized for storing and managing data.
+- ![#58508d](https://via.placeholder.com/15/58508d/58508d.png)pandas: Employed for data manipulation and analysis.
+- ![#8fce00](https://via.placeholder.com/15/8fce00/8fce00.png)matplotlib & seaborn: Used for data visualization to create insightful charts and graphs.
+- ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png)PySpark: Leveraged for distributed data processing and ETL operations.
+- ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png)GitHub: Used for version control, ensuring collaborative development and code management.
+- ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png)Jenkins: Implemented CI/CD pipelines to automate testing and deployment, enhancing reliability and efficiency.
+- Install Libraries: Run the requirements.txt document in the terminal to install all required Python libraries:
+
 
 <b>Workflow Diagram of the Requirements.</b>
 The workflow diagram below will help you visualize the flow and scope of this capstone project at a high level.
