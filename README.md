@@ -130,7 +130,7 @@ Used spark.read.JSON() to read the API data from endpoit URL , ulilized PySpark 
 
 # Project Details
 # Data Processing and ETL Functionalities
-<h6>Data Ingestion:</h6> The application ingests data from various sources and stores it in MySQL.
+- Data Ingestion: The application ingests data from various sources and stores it in MySQL.
 - Data Transformation: Utilized pandas and PySpark to clean and transform the ingested data, preparing it for analysis.
 - Data Loading: Loaded the transformed data back into MySQL for further use and analysis.
 
